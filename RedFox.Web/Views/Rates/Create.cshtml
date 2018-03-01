@@ -1,0 +1,169 @@
+﻿@{
+    ViewBag.Title = "Rates";
+}
+
+@section Head {
+    <link rel="stylesheet" href="https://unpkg.com/eonasdan-bootstrap-datetimepicker@4.17.47/build/css/bootstrap-datetimepicker.min.css">
+}
+
+<div class="row wrapper border-bottom page-heading">
+    <div class="col-lg-12">
+        <h2>Rates </h2>
+        <ol class="breadcrumb">
+            <li> <a href="/home">Home</a> </li>
+            <li> <a href="/rates">Rates</a> </li>
+            <li class="active"> <strong>Create new rate</strong> </li>
+        </ol>
+    </div>
+    <div class="col-lg-12"> </div>
+</div>
+<div class="wrapper-content ">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="alert alert-danger alert-dismissible" role="alert" v-if="error != ''">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <strong>Error!</strong> <span v-text="error"></span>. Try to reload the page; or <a class="alert-link" href="#">contact support</a> if the problem persists.
+            </div>
+            <div class="alert alert-success alert-dismissable" role="alert" v-if="success != ''">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <strong>Success!</strong> <span v-text="success"></span>.
+            </div>
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Rates</h5>
+                </div>
+                <div class="ibox-content collapse in">
+                    <div class="widgets-container">
+                        <div>
+                            <div class="table-toolbar">
+                                <div class="col-md-6">
+                                    <div class="btn-group">
+                                        <button class="btn sbold green" v-on:click.prevent="add"> Add New </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <table id="table" class="display nowrap table responsive nowrap table-striped" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>From minute</th>
+                                        <th>To minute (0 = infite)</th>
+                                        <th>Cost per minute $</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="(row, index) in rows" style="cursor: pointer">
+                                        <td><input class="text-right" type="number" v-model.number="row.From" disabled /></td>
+                                        <td><input class="text-right" type="number" v-model.number="row.To" v-bind:disabled="index == rows.length - 1" v-on:change="validate(index, row)" /></td>
+                                        <td><input class="text-right" type="number" v-model.number="row.Cost" /></td>
+                                        <td><i class="fa fa-remove" v-on:click="remove(index)"></i></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="widgets-container">
+                <form class="form-horizontal m-t-xs">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Valid from</label>
+                        <div class="col-sm-10">
+                            <date-picker v-model="meta.Valid"></date-picker>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="form-group">
+                        <div class="col-sm-10 col-sm-offset-2">
+                            <button type="submit" class="btn aqua m-t-xs bottom15-xs" v-on:click.prevent="submit">Submit</button>
+                            <button class="btn warning m-t-xs bottom15-xs" v-on:click.prevent="reset">Reset</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script src="https://unpkg.com/moment@2.18.1/min/moment.min.js"></script>
+    <script src="https://unpkg.com/eonasdan-bootstrap-datetimepicker@4.17.47/build/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="https://unpkg.com/vue-bootstrap-datetimepicker"></script>
+
+    <script>
+        Vue.component('date-picker', VueBootstrapDatetimePicker.default);
+
+        new Vue({
+            el  : '#app',
+            data: {
+                error  : '',
+                success: '',
+                rows   : [],
+                meta   : {
+                    Valid : new Date()
+                }
+            },
+            mounted: function() { this.reset(); },
+            methods: {
+                reset   : function() {
+                    this.rows       = [{ From: 0, To: 0, Cost: 0 }];
+                    this.meta.Valid = new Date();
+                },
+                add     : function() { this.rows.push({ From: 0, To: 0, Rate: 0 }); },
+                validate: function(i, r) {
+                    if (this.rows.length > i + 1) {
+                        this.rows[i + 1].From = r.To + 1;
+                    }
+                },
+                remove  : function(i) {
+                    var from = this.rows[i].From;
+                    var to   = this.rows[i].To;
+
+                    if (this.rows.length == 1) {
+                        this.rows[0].From = 0;
+                        this.rows[0].To   = 0;
+                    }
+
+                    else {
+                        this.rows.splice(i, 1);
+                    }
+
+                    if (i == 0) {
+                        this.rows[0].From = 0;
+                    }
+
+                    if (i == this.rows.length) {
+                        this.rows[this.rows.length - 1].To = 0;
+                    }
+
+                    if (i > 0 && i < this.rows.length) {
+                        this.rows[i].From = this.rows[i - 1].To + 1;
+                    }
+
+                    if (i < this.rows.length - 1) {
+                        this.rows[i].To   = this.rows[i + 1].From - 1;
+                    }
+                },
+                submit  : function() {
+                    var self = this;
+                    var data = {
+                        Rates: this.rows,
+                        Meta : this.meta
+                    };
+
+                    self.success = '';
+                    self.error   = '';
+
+                    redfox.post('api/rates', data).then(function (response) {
+                        if (response.status == 200) {
+                            self.success = 'Rates have been added';
+                        }
+                    }).catch(function (e) {
+                        self.error = e.message;
+                    });
+                }
+            }
+        });
+    </script>
+}

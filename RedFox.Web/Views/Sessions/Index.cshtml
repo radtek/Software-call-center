@@ -1,0 +1,200 @@
+﻿@{
+    ViewBag.Title = "Sessions";
+}
+
+@section head
+{
+    <link href="//unpkg.com/vue2-datatable-component/dist/min.css" rel="stylesheet">
+}
+
+<div class="row wrapper border-bottom page-heading">
+    <div class="col-lg-12">
+        <h2>Sessions </h2>
+        <ol class="breadcrumb">
+            <li> <a href="index.html">Home</a> </li>
+            <li class="active"> <strong>Sessions</strong> </li>
+        </ol>
+    </div>
+    <div class="col-lg-12"> </div>
+</div>
+<div class="wrapper-content ">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="alert alert-danger alert-dismissible" role="alert" v-if="error">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <strong>Error!</strong> <span v-text="error"></span>. Try to reload the page; or <a class="alert-link" href="#">contact support</a> if the problem persists.
+            </div>
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Sessions</h5>
+                </div>
+                <div class="ibox-content collapse in">
+                    <div class="widgets-container">
+                        <div class="col-md-12">
+                            <div class="btn-group">
+                                <button class="btn green" v-on:click="create"> Schedule a session  </button>
+                            </div>
+                        </div>
+                        <div>
+                            <datatable v-bind="table"></datatable>
+                            @*
+                            <table id="table" class="table responsive nowrap table-striped" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Station</th>
+                                        <th>Scheduled</th>
+                                        <th>Started</th>
+                                        <th>Ended</th>
+                                        <th>Encoder</th>
+                                        <th>State</th>
+                                        <th>Duration</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr>
+                                        <th>Filter</th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </tfoot>
+                                <tbody>
+                                    <tr v-for="row in data">
+                                        <td>{{ row.Id        }}</td>
+                                        <td>{{ row.Name      }}</td>
+                                        <td>{{ row.Schedule  }}</td>
+                                        <td>{{ row.StartDate }}</td>
+                                        <td>{{ row.EndTime   }}</td>
+                                        <td>{{ row.Encoder   }}</td>
+                                        <td>{{ row.State     }}</td>
+                                        <td>{{ row.Elapsed   }}</td>
+                                        <td><button class="btn blue" v-if="row.Id" v-on:click.stop="edit(row.Id)"> View </button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            *@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.5/lodash.min.js"></script>
+    <script src="https://unpkg.com/vue2-datatable-component/dist/min.js"></script>
+
+    @*
+    <script src="~/Scripts/Vendor/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/Vendor/dataTables.bootstrap.min.js"></script>
+    *@
+
+    <script src="https://unpkg.com/moment@2.18.1/min/moment.min.js"></script>
+
+    <script>
+        Vue.component('datatable', Datatable.default);
+
+        new Vue({
+            el  : '#app',
+            data: {
+                table: {
+                    supportBackup: true,
+                    total        : 0,
+                    query        : {},
+                    data         : [],
+                    selection    : [],
+                    columns      : [
+                        {
+                            title   : 'ID',
+                            field   : 'Id',
+                            sortable: true
+                        },
+                        {
+                            title   : 'Name',
+                            field   : 'Name',
+                            thComp  : 'FilterTh',
+                            sortable: true
+                        },
+                        {
+                            title   : 'Schedule',
+                            field   : 'Schedule',
+                            sortable: true
+                        },
+                        {
+                            title   : 'Started',
+                            field   : 'StartTime',
+                            sortable: true
+                        },
+                        {
+                            title   : 'Ended',
+                            field   : 'EndTime',
+                            sortable: true
+                        },
+                        {
+                            title   : 'Elapsed',
+                            field   : 'Elapsed',
+                            sortable: true
+                        }
+                    ]
+                },
+                error   : null,
+                timezone: /\((.*)\)/.exec(new Date().toString())[1],
+                
+            },
+            watch: {
+                'table.query': {
+                    handler (query) { this.fetch(query); }, deep: true
+                }
+            },
+            methods: {
+                edit  : function (id) { window.location.href = '/sessions/edit/' + id; },
+                create: function () { window.location.href = '/sessions/create'; },
+                fetch : function (query) { 
+                    var self   = this;
+                    var params = '?limit=' + query.limit + '&offset=' + query.offset + '&order=' + query.order + '&sort=' + query.sort;
+                    
+                    redfox.get('api/sessions' + params).then(function (response) {
+                        self.table.data  = response.data;
+                        self.table.total = response.data.length;
+                    
+                        var rows = self.table.data;
+
+                        for (var i = 0; i < rows.length; i++) {
+                            if (rows[i].StartDate)
+                                rows[i].StartDate = moment.utc(rows[i].StartTime).local().format('ll');
+
+                            if (rows[i].StartTime)
+                                rows[i].StartTime = moment.utc(rows[i].StartTime).local().format('LTS');
+
+                            if (rows[i].EndTime) {
+                                rows[i].EndTime = moment.utc(rows[i].EndTime).local().format('LTS');
+                            }
+
+                            if (rows[i].Elapsed) {
+                                rows[i].Elapsed = moment().startOf('day').seconds(rows[i].Elapsed).format('H[h] mm[m] ss[s]');
+                            }
+
+                            if (rows[i].Schedule) {
+                                rows[i].Schedule = moment.utc(rows[i].Schedule).local().format('llll');
+                            }
+                        }
+                    }).catch(function (error) {
+                        self.error = error.message;
+                    });
+                }
+            },
+            mounted: function () {
+                
+            }
+        });
+    </script>
+
+}

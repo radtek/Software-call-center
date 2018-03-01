@@ -1,0 +1,104 @@
+﻿
+@{
+    ViewBag.Title = "Encoders";
+}
+<div class="row wrapper border-bottom page-heading">
+    <div class="col-lg-12">
+        <h2>Station Encoders </h2>
+        <ol class="breadcrumb">
+            <li> <a href="index.html">Home</a> </li>
+            <li class="active"> <strong>Encoders</strong> </li>
+        </ol>
+    </div>
+    <div class="col-lg-12"> </div>
+</div>
+<div class="wrapper-content ">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="alert alert-danger alert-dismissible" role="alert" v-if="error">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <strong>Error!</strong> <span v-text="error"></span>. Try to reload the page; or <a class="alert-link" href="#">contact support</a> if the problem persists.
+            </div>
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Station encoders</h5>
+                </div>
+                <div class="ibox-content collapse in">
+                    <div class="widgets-container">
+                        <div class="col-md-12">
+                            <div class="btn-group">
+                                <button class="btn green" v-on:click="create"> Add New  </button>
+                            </div>
+                        </div>
+                        <div>
+                            <table id="table" class="display nowrap table responsive nowrap table-striped" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Station</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="row in rows">
+                                        <td>{{ row.Name    }}</td>
+                                        <td>{{ row.Station }}</td>
+                                        <td>
+                                            <button class="btn blue" v-if="row.Id" v-on:click.stop="edit(row.Id)"> View </button>
+                                            <button class="btn red"  v-if="row.Id" v-on:click.stop="delete(row.Id)"> Delete </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript" src="~/Scripts/Vendor/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/Vendor/dataTables.bootstrap.min.js"></script>
+
+    <script>
+        new Vue({
+            el     : '#app',
+            data   : {
+                error: null,
+                 rows: []
+            },
+            methods: {
+                create: function()   { window.location.href = 'encoders/create';       },
+                edit  : function(id) { window.location.href = 'encoders/edit/'   + id; },
+                delete: function(id) { window.location.href = 'encoders/delete/' + id; }
+            },
+            mounted: function () {
+                var self = this;
+
+                redfox.get('api/encoders', {
+                    headers: {
+                        'Authorization': sessionStorage.getItem('token_type') + ' ' + sessionStorage.getItem('access_token')
+                    }
+                }).then(function (response) {
+                    self.rows = response.data;
+
+                    if (self.rows.length == 0) {
+                        self.rows.push({
+                            Name: 'No encoders defined'
+                        });
+                    }
+                    setTimeout(function () {
+                        $('#table').DataTable({
+                            dom: 'rtp',
+                            searching: false
+                        });
+                    }, 1);
+                }).catch(function (error) {
+                    self.error = error.message;
+                })
+            }
+        });
+    </script>
+}

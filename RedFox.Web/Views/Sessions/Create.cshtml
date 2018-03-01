@@ -1,0 +1,483 @@
+﻿@{
+    ViewBag.Title = "Sessions";
+}
+
+@section Head {
+    <link rel="stylesheet" href="~/Content/Skins/square/green.css" />
+    <link rel="stylesheet" href="~/Content/Skins/square/red.css" />
+    <link rel="stylesheet" href="https://unpkg.com/eonasdan-bootstrap-datetimepicker@4.17.47/build/css/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/vue-multiselect@2.0.6/dist/vue-multiselect.min.css">
+    <link rel="stylesheet" href="//unpkg.com/element-ui@2.0.5/lib/theme-chalk/index.css">
+}
+
+<div class="row wrapper border-bottom page-heading">
+    <div class="col-sm-12">
+        <h2>Sessions </h2>
+        <ol class="breadcrumb">
+            <li> <a href="/">Home</a> </li>
+            <li> <a href="~/workflows">Sessions</a> </li>
+            <li class="active"> <strong>Create</strong> </li>
+        </ol>
+    </div>
+    <div class="col-sm-12"> </div>
+</div>
+<div class="wrapper-content ">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="alert alert-danger alert-dismissible" role="alert" v-if="error">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <strong>Error!</strong> <span v-text="error"></span>. Try to reload the page; or <a class="alert-link" href="#">contact support</a> if the problem persists.
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <div class="alert alert-success alert-dismissible" role="alert" v-if="success">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <strong>Success!</strong> <span v-text="success"></span>.
+            </div>
+        </div>
+        <div class="col-sm-12 top20">
+            <div class="ibox-title">
+                <h5>Schedule a session</h5>
+            </div>
+            <div class="widgets-container">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Station</label>
+                        <div class="col-sm-9">
+                            <select class="form-control bottom15" v-model="session.Station.Id">
+                                <option v-for="station in stations" v-bind:value="station.Id">{{ station.Name }}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Connection Type</label>
+                        <div class="col-sm-9">
+                            <select class="form-control bottom15">
+                                <option>Phone line</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Phone number</label>
+                        <div class="col-sm-9">
+                            <input required v-model="session.Consumer.Endpoint" class="form-control m-t-xxs" placeholder="+1 (###) ###-####">
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Encoder</label>
+                        <div class="col-sm-9">
+                            <select class="form-control" v-model="encoder" required>
+                                <option v-for="(encoder, index) in encoders" v-bind:value="index">{{ encoder.Name }}</option>
+                            </select>
+                            <span v-if="encoderHelp" class="left invalid-feedback bottom10"><small>{{ encoderHelp }}</small></span>
+                        </div>
+                    </div>
+                    <div class="form-group" v-if="session.Encoder.EncoderType.Protocol == 3">
+                        <label class="col-sm-3 control-label">Phone number</label>
+                        <div class="col-sm-9">
+                            <input required v-model="session.Encoder.PhoneNumber" class="form-control m-t-xxs" placeholder="+1 (###) ###-####">
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Schedule</label>
+                        <div class="col-sm-9">
+                            <div class="input-group">
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn aqua" data-toggle="modal" data-target="#recurrency">Schedule</button>
+                                </span>
+                                <input class="form-control" v-model="cronString" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Length</label>
+                        <div class="col-sm-9">
+                            <input required v-model="session.Schedule.Length" class="form-control m-t-xxs" placeholder="Length in minutes">
+                            <span v-if="!session.Schedule.Length || isNaN(session.Schedule.Length)" class="left invalid-feedback bottom10"><small>You must provide a session length in minutes</small></span>
+                        </div>
+                    </div>
+                    <div id="recurrency" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Schedule</h4>
+                                </div>
+                                <div class="modal-body form-horizontal">
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2">Frequency</label>
+                                        <div class="col-sm-10">
+                                            <select class="form-control bottom15" v-model="repeat.FrequencyType">
+                                                <option v-for="frequencyType in frequencyTypes" v-bind:value="frequencyType.Id">{{ frequencyType.Text }}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" v-if="repeat.FrequencyType == 8">
+                                        <label class="control-label col-sm-2">Days</label>
+                                        <div class="col-sm-10">
+                                            <multiselect v-model="repeat.FrequencyInterval" :options="frequencyIntervals" :multiple="true" :close-on-select="false" :clear-on-select="false" :hide-selected="true" :preserve-search="true" placeholder="Pick days" label="Text" track-by="Text"></multiselect>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" v-if="repeat.FrequencyType == 16">
+                                        <label class="control-label col-sm-2">Months</label>
+                                        <div class="col-sm-10">
+                                            <multiselect v-model="repeat.FrequencyMonth" :options="frequencyMonths" :multiple="true" :close-on-select="false" :clear-on-select="false" :hide-selected="true" :preserve-search="true" placeholder="Pick Month" label="Text" track-by="Text"></multiselect>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" v-if="repeat.FrequencyMonth != null && repeat.FrequencyType == 16">
+                                        <label class="control-label col-sm-2">Day</label>
+                                        <div class="col-sm-10">
+                                            <multiselect v-model="repeat.FrequencyDay" :options="frequencyDays" :searchable="false" :close-on-select="false" :show-labels="false" placeholder="Pick a value" label="Text" track-by="Text"></multiselect>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2">Date/Time</label>
+                                        <div class="col-sm-10">
+                                            <date-picker v-model="session.Start" :config="config"></date-picker>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal" v-on:click.prevent="setRepeat">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Record session</label>
+                        <div class="col-sm-9" style="padding-top: 7px">
+                            <input class="form-check-input icheck-red" type="checkbox" v-model="session.Record">
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Price per minute</label>
+                        <div class="col-sm-9">
+                            <div style="padding-top: 7px">$ {{ session.Price }}</div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">I accept the terms and conditions</label>
+                        <div class="col-sm-9" style="padding-top: 7px">
+                            <input class="form-check-input icheck-green" type="checkbox" v-model="session.Accept">
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="form-group">
+                        <div class="col-sm-9 col-sm-offset-3">
+                            <button type="submit" class="btn aqua bottom15-xs" v-on:click.prevent="submit">Submit</button>
+                            <button type="button" class="btn default bottom15-xs" v-on:click.prevent="cancel">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="~/Scripts/Vendor/icheck.min.js"></script>
+
+    <script src="https://unpkg.com/moment@2.18.1/min/moment.min.js"></script>
+    <script src="https://unpkg.com/eonasdan-bootstrap-datetimepicker@4.17.47/build/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="https://unpkg.com/vue-bootstrap-datetimepicker"></script>
+    <script type="text/javascript" src="https://unpkg.com/vue-multiselect@2.0.3/dist/vue-multiselect.min.js"></script>
+    <script src="//unpkg.com/element-ui@2.0.5/lib/index.js"></script>
+    <script>
+        Vue.component('date-picker', VueBootstrapDatetimePicker.default);
+
+        new Vue({
+            el: '#app',
+            components: {
+                Multiselect: window.VueMultiselect.default
+            },
+            data: {
+                config    : { format: 'YYYY-MM-DD HH:mm Z' },
+                error     : null,
+                success   : null,
+                cronString: '',
+                stations  : [],
+                encoders  : [],
+                encoder   : -1,
+                session   : {
+                    Name         : '',
+                    Accept       : false,
+                    Record       : false,
+                    Encoder      : {
+                        Id         : 0,
+                        Endpoint   : '',
+                        EncoderType: { Protocol: 0 }
+                    },
+                    Consumer     : {
+                        Endpoint: ''
+                    },
+                    Station      : {
+                        Id: 0
+                    },
+                    Notifications: [],
+                    Price        : 0.16,
+                    Start        : null,
+                    Schedule     : {
+                        Start : null,
+                        Length: '',
+                        CRON  : ''
+                    }
+                },
+                repeat: {
+                    FrequencyType    : 1,
+                    FrequencyInterval: null,
+                    FrequencyMonth   : null,
+                    FrequencyDay     : null,
+                },
+                frequencyIntervals: [
+                    { Id: 1, Text: 'Sunday'    },
+                    { Id: 2, Text: 'Monday'    },
+                    { Id: 3, Text: 'Tuesday'   },
+                    { Id: 4, Text: 'Wednesday' },
+                    { Id: 5, Text: 'Thursday'  },
+                    { Id: 6, Text: 'Friday'    },
+                    { Id: 7, Text: 'Saturday'  }
+                ],
+                frequencyTypes: [
+                    { Id:  1, Text: 'Once'     },
+                    { Id:  4, Text: 'Daily'    },
+                    { Id:  8, Text: 'Weekly'   },
+                    { Id: 16, Text: 'Monthly'  }
+                ],
+                frequencyMonths: [
+                    { Id:  1, Text: "Jan"      },
+                    { Id:  2, Text: "Feb"      },
+                    { Id:  3, Text: "Mar"      },
+                    { Id:  4, Text: "Apr"      },
+                    { Id:  5, Text: "May"      },
+                    { Id:  6, Text: "Jun"      },
+                    { Id:  7, Text: "Jul"      },
+                    { Id:  8, Text: "Aug"      },
+                    { Id:  9, Text: "Sep"      },
+                    { Id: 10, Text: "Oct"      },
+                    { Id: 11, Text: "Nov"      },
+                    { Id: 12, Text: "Dec"      }
+                ],
+                frequencyDays: [],
+                encoderHelp: 'Select a station first',
+            },
+            watch: {
+                'session.Station.Id': function () { ;
+                    this.session.Consumer.Endpoint = JSON.parse(this.session.Station.Consumer).Endpoint;
+                    this.getEncoders(this.session.Station.Id);
+                },
+                'encoder': function () {
+                    this.encoderHelp     = '';
+                    this.session.Encoder = this.encoders[this.encoder];
+
+                    if (this.session.Encoder.Id == 0) this.encoderHelp = 'Select an encoder';
+                    if (this.session.Station.Id == 0) this.encoderHelp = 'Select a station first';
+                },
+                'session.Record': function () {
+                    if (this.session.Record) this.session.Price = 0.23; else this.session.Price = 0.16;
+                }
+            },
+            methods: {
+                remove: function () {
+                    this.session.Schedule.Repeat = false;
+                    this.session.Schedule.CRON = '';
+                },
+                cancel: function () { window.location.href = '/sessions'; },
+                submit: function (event) {
+                    var self = this;
+
+                    if (this.session.Schedule.Start == '') {
+                        alert("Enter valid start date and time");
+                        return;
+                    }
+                    
+                    this.session.Schedule.Start = moment.utc(this.session.Start, 'YYYY-M-D HH:mm ZZ');
+
+                    if (isNaN(parseInt(this.session.Schedule.Length))) {
+                        alert("Enter valid session length in minutes");
+                        return;
+                    }
+                    
+                    event.target.disabled = true;
+
+                    redfox.post('api/sessions', this.session).then(function (response) {
+                        if (response.status == 201) {
+                            var mom  = moment(response.data.NextFireTimeUtc);
+                            var date = mom.format('L') + ' ' + mom.format('LT');
+
+                            self.success = 'Session will start at ' + date;
+                        }
+                    }).catch(function (e) {
+                        self.error = e.message;
+                        event.target.disabled = false;
+                    });
+                },
+                getEncoders: function (id) {
+                    var self = this;
+
+                    self.encoders    = [];
+                    self.encoderHelp = 'Please wait ...';
+
+                    redfox.get('api/stations/' + id + '/encoders').then(function (response) {
+                        self.encoderHelp = 'Select an encoder';
+                        self.encoders    = JSON.parse(response.data);
+                        self.encoder     = 0;
+                    }).catch(function (e) {
+                        self.error = e.message;
+                    });
+                },
+                setRepeat: function () {
+                    // sec min hrs dom mon dow year
+                    var error    = '';
+                    var cron     = '0 ';
+                    var mom      = moment(this.session.Start, 'YYYY-M-D HH:mm ZZ');
+                    var time     = mom.format('LT');
+                    var friendly = '';
+
+                    cron += parseInt(mom.format('m')) + ' ' + parseInt(mom.format('H'));
+
+                    if (this.repeat.FrequencyType == 1) {
+                        // Once
+                        cron += ' ';
+                        cron += mom.format('D');
+                        cron += ' ';
+                        cron += mom.format('M');
+                        cron += ' ?';
+
+                        this.session.Schedule.CRON = cron;
+                        this.cronString            = mom.format('L') + ' ' + mom.format('LT');
+                        return;
+                    }
+
+                    else if (this.repeat.FrequencyType == 4) {
+                        // Daily
+                        cron += ' * * *';
+                        friendly = 'Daily at ' + time;
+                    }
+
+                    else if (this.repeat.FrequencyType == 8) {
+                        // Weekly
+                        cron += ' ? * '
+                        friendly = 'Every ';
+
+                        if (this.repeat.FrequencyInterval != null) {
+                            if (this.repeat.FrequencyInterval.length > 0) {
+                                for (var j = 0; j < this.repeat.FrequencyInterval.length; j++) {
+                                    cron += this.repeat.FrequencyInterval[j].Id;
+                                    friendly += this.repeat.FrequencyInterval[j].Text;
+
+                                    if (j < this.repeat.FrequencyInterval.length - 1) {
+                                        cron += ',';
+                                        friendly += ', ';
+                                    }
+                                }
+                            } else {
+                                cron += '0';
+                            }
+                        } else {
+                            cron += '0';
+                        }
+
+                        friendly += ' at ' + time;
+                    }
+
+                    else {
+                        // Monthly
+                        friendly = 'Every ';
+
+                        var day    = '';
+                        var months = '';
+
+                        if (this.repeat.FrequencyDay != null) {
+                            cron += ' ' + this.repeat.FrequencyDay.Id + ' ';
+                            day   = this.repeat.FrequencyDay.Id;
+                        } else {
+                            cron += ' 1 '
+                            day   = '1';
+                        }
+
+                        if (this.repeat.FrequencyMonth != null) {
+                            for (var j = 0; j < this.repeat.FrequencyMonth.length; j++) {
+                                cron += this.repeat.FrequencyMonth[j].Id;
+                                friendly += this.repeat.FrequencyMonth[j].Text;
+
+                                if (j < this.repeat.FrequencyMonth.length - 1) {
+                                    cron += ',';
+                                    friendly += ', ';
+                                }
+                            }
+                        } else {
+                            cron += '*';
+                        }
+
+                        cron     += ' ?';
+                        friendly += ', on day ' + day + ', at ' + time;
+                    }
+
+                    console.log(cron);
+
+                    if (error == '') {
+                        this.session.Schedule.CRON = cron;
+                        this.cronString            = friendly + '; from ' + mom.format('ll');
+                    }
+
+                    else {
+                        alert(error);
+                    }
+                }
+            },
+            mounted: function () {
+                var self = this;
+
+                for (var m = 1; m < 32; m++) {
+                    self.frequencyDays.push({ 'Id': m, "Text": m.toString() });
+                }
+
+                redfox.get('api/stations').then(function (response) {
+                    self.stations = response.data;
+
+                    if (self.stations.length == 1) {
+                        self.session.Station = self.stations[0];
+                    }
+                }).catch(function (e) {
+                    self.error = e.message;
+                });
+                
+                $('input.icheck-red').iCheck({
+                    checkboxClass: 'icheckbox_square-red',
+                    radioClass   : 'iradio_square-red',
+                    increaseArea : '20%'
+                });
+
+                $('input.icheck-green').iCheck({
+                    checkboxClass: 'icheckbox_square-green',
+                    radioClass   : 'iradio_square-green',
+                    increaseArea : '20%'
+                });
+
+                $('input.icheck-red').on('ifChecked', function (e) {
+                    self.session.Record = this.checked;
+                });
+
+                $('input.icheck-red').on('ifUnchecked', function (e) {
+                    self.session.Record = this.checked;
+                });
+
+                $('input.icheck-green').on('ifChecked', function (e) {
+                    self.session.Accept = this.checked;
+                });
+
+                $('input.icheck-green').on('ifUnchecked', function (e) {
+                    self.session.Accept = this.checked;
+                });
+            }
+        });
+    </script>
+}

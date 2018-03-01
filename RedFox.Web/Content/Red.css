@@ -1,0 +1,384 @@
+﻿/*!
+ * AdminUI v1.0 (http://adminui-v1.0.bittyfox.com/)
+ * Copyright AdminUI Company &copy; 2017 
+ * 
+ */
+
+body {
+    background-color: #292929
+}
+
+.uppercase {
+    text-transform: uppercase !important;
+}
+
+.page-header.navbar {
+    background-color: #e35b5a;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.05), 0 1px 0 rgba(0, 0, 0, 0.05);
+}
+
+    .page-header.navbar .menu-toggler {
+        background-image: url("../images/sidebar_toggler_icon_darkblue.png");
+    }
+
+    .page-header.navbar .top-menu .navbar-nav > li.dropdown-user > .dropdown-toggle > .username,
+    .page-header.navbar .top-menu .navbar-nav > li.dropdown-user > .dropdown-toggle > i {
+        color: #fff;
+    }
+
+
+    .page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-toggle:hover, .page-header.navbar .top-menu .navbar-nav > li.dropdown.open .dropdown-toggle {
+        background: none;
+        color: #292929;
+    }
+
+    .page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-toggle > i {
+        color: #fff;
+    }
+
+
+.page-sidebar, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover {
+    background-color: #292929;
+}
+
+.page-sidebar-closed .page-sidebar .sidebar-search.open .input-group, .page-sidebar-closed .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .sidebar-search.open .input-group {
+    background-color: #292929;
+}
+
+
+.page-content {
+    background-color: #f3f3f4;
+    margin-top: 0;
+    padding: 0;
+}
+
+.page-sidebar.collapse {
+    display: block;
+    max-height: none !important;
+}
+
+.navbar-collapse.collapse {
+    display: block !important;
+    height: auto !important;
+    overflow: visible !important;
+    padding-bottom: 0;
+}
+
+
+
+.page-sidebar .sidebar-search .input-group, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .sidebar-search .input-group {
+    border-bottom: 1px solid #435060;
+}
+
+    .page-sidebar .sidebar-search .input-group .form-control, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .sidebar-search .input-group .form-control {
+        background-color: #292929;
+        color: #4e5c6f;
+    }
+
+.form-control {
+    outline: 0 none !important;
+}
+
+.btn, .form-control {
+    box-shadow: none !important;
+}
+
+
+.page-sidebar-menu-light .page-sidebar .page-sidebar-menu > li.active > a, .page-sidebar-menu-light .page-sidebar .page-sidebar-menu > li.active > a, .page-sidebar-menu-light .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu > li.active > a, .page-sidebar-menu-light .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu > li.active > a {
+    background: none;
+    border-top-color: transparent;
+    color: #fff;
+}
+
+
+.page-sidebar-menu-light .page-sidebar .page-sidebar-menu > li.open, .page-sidebar-menu-light .page-sidebar .page-sidebar-menu > li.active, .page-sidebar-menu-light .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu > li.active, .page-sidebar-menu-light .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu > li.active {
+    background: #293846 none repeat scroll 0 0;
+    border-left: 4px solid #e35b5a;
+}
+
+
+.page-sidebar-menu-light .page-sidebar .page-sidebar-menu .sub-menu > li.active > a, .page-sidebar-menu-light .page-sidebar .page-sidebar-menu .sub-menu > li.open > a, .page-sidebar-menu-light .page-sidebar .page-sidebar-menu .sub-menu > li:hover > a, .page-sidebar-menu-light .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu .sub-menu > li.active > a, .page-sidebar-menu-light .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu .sub-menu > li.open > a, .page-sidebar-menu-light .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu .sub-menu > li:hover > a {
+    background: none !important;
+    color: #fff;
+}
+
+.page-sidebar .page-sidebar-menu .sub-menu > li.active > a, .page-sidebar .page-sidebar-menu .sub-menu > li.open > a, .page-sidebar .page-sidebar-menu .sub-menu > li:hover > a, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu .sub-menu > li.active > a, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu .sub-menu > li.open > a, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu .sub-menu > li:hover > a {
+    background: #2e2828 none repeat scroll 0 0 !important;
+}
+
+.page-sidebar .page-sidebar-menu > li.open > a, .page-sidebar .page-sidebar-menu > li:hover > a, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu > li.open > a, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu > li:hover > a {
+    background: #191919 none repeat scroll 0 0;
+    color: #b4bcc8;
+}
+
+.page-sidebar .page-sidebar-menu .sub-menu > li > a, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu .sub-menu > li > a {
+    color: #b4bcc8;
+}
+
+.page-sidebar .page-sidebar-menu > li.heading > h3, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu > li.heading > h3 {
+    color: #708096;
+}
+
+.page-sidebar .page-sidebar-menu > li.heading > h3, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu > li.heading > h3 {
+    font-size: 14px;
+    font-weight: 300;
+    margin: 0;
+    padding: 0;
+}
+
+.page-sidebar .page-sidebar-menu > li.active > a, .page-sidebar .page-sidebar-menu > li.active:hover > a, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu > li.active > a, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu > li.active > a {
+    border-top-color: rgba(0, 0, 0, 0);
+    color: #e35b5a;
+}
+
+
+
+.page-sidebar-menu-light .page-sidebar:hover .page-sidebar-menu > li.active > a {
+    background: #191919;
+}
+
+/*
+.page-sidebar .page-sidebar-menu > li > a > i[class*="icon-"], .page-sidebar .page-sidebar-menu > li > a > i[class^="icon-"], .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu > li > a > i[class*="icon-"], .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu > li > a > i[class^="icon-"] {
+    color: #6b788b;
+}*/
+
+.page-sidebar .page-sidebar-menu > li > a, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu > li > a {
+    color: #b4bcc8;
+}
+
+.page-sidebar .page-sidebar-menu li:hover > a > .arrow.open::before, .page-sidebar .page-sidebar-menu li:hover > a > .arrow::before, .page-sidebar .page-sidebar-menu li > a > .arrow.open::before, .page-sidebar .page-sidebar-menu li > a > .arrow::before, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu li:hover > a > .arrow.open::before, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu li:hover > a > .arrow::before, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu li > a > .arrow.open::before, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu li > a > .arrow::before {
+    color: #606c7d;
+}
+
+.page-sidebar .sidebar-search .input-group .input-group-btn .btn, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .sidebar-search .input-group .input-group-btn .btn {
+    background-color: #292929;
+    color: #4e5c6f;
+}
+
+.page-sidebar .page-sidebar-menu > li.active > a > .arrow.open::before, .page-sidebar .page-sidebar-menu > li.active > a > .arrow::before, .page-sidebar .page-sidebar-menu > li.active > a > i, .page-sidebar .page-sidebar-menu > li.active > a > .arrow.open::before, .page-sidebar .page-sidebar-menu > li.active > a > .arrow::before, .page-sidebar .page-sidebar-menu > li.active > a > i, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu > li.active > a > .arrow.open::before, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu > li.active > a > .arrow::before, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu > li.active > a > i, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu > li.active > a > .arrow.open::before, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu > li.active > a > .arrow::before, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu > li.active > a > i {
+    color: #e35b5a;
+}
+
+a.list-group-item.active, a.list-group-item.active:hover, a.list-group-item.active:focus {
+    background-color: #29aba4;
+    border-color: #29aba4;
+    color: #ffffff;
+    z-index: 2;
+}
+
+.footer {
+    background: white none repeat scroll 0 0;
+    border-top: 1px solid #e7eaec;
+}
+
+    .footer a {
+        color: #2f4050;
+    }
+
+
+.page-header.navbar .hor-menu .navbar-nav > li.active > a, .page-header.navbar .hor-menu .navbar-nav > li.current > a {
+    background: #292929 none repeat scroll 0 0;
+    color: #fff;
+}
+
+.page-header.navbar .hor-menu .navbar-nav > li.active .selected, .page-header.navbar .hor-menu .navbar-nav > li.current .selected {
+    border-top: 6px solid #292929;
+}
+
+.page-header.navbar .hor-menu .navbar-nav > li > a {
+    color: #fff;
+}
+
+.page-header.navbar .hor-menu .navbar-nav > li.mega-menu-dropdown > .dropdown-menu .mega-menu-content .mega-menu-submenu li > h3 {
+    color: #fff;
+}
+
+.page-header.navbar .hor-menu .navbar-nav > li .dropdown-menu li > a, .page-header.navbar .hor-menu .navbar-nav > li .dropdown-menu li > a > i {
+    color: #fff;
+}
+
+    .page-header.navbar .hor-menu .navbar-nav > li .dropdown-menu li > a > i {
+        color: #292929;
+    }
+
+
+.page-header.navbar .hor-menu.hor-menu-light .navbar-nav > li.active > a, .page-header.navbar .hor-menu.hor-menu-light .navbar-nav > li.active > a:hover, .page-header.navbar .hor-menu.hor-menu-light .navbar-nav > li.current > a, .page-header.navbar .hor-menu.hor-menu-light .navbar-nav > li.current > a:hover {
+    background: #fff none repeat scroll 0 0;
+    color: #292929;
+}
+
+.page-header nav > li > a:focus, .page-header .nav > li > a:hover {
+    background: none;
+    color: #fff;
+}
+
+
+.page-header.navbar .hor-menu.hor-menu-light .navbar-nav > li.active .selected, .page-header.navbar .hor-menu.hor-menu-light .navbar-nav > li.current .selected {
+    border-top: 6px solid #fff;
+}
+
+
+.page-header.navbar .hor-menu.hor-menu-light .navbar-nav > li > a {
+    color: #fff;
+}
+
+.page-header.navbar .hor-menu.hor-menu-light .navbar-nav > li .dropdown-menu li > a {
+    color: #000;
+}
+
+
+.page-header.navbar .hor-menu.hor-menu-light .navbar-nav > li .dropdown-menu {
+    background: #fff none repeat scroll 0 0;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.05), 0 1px 0 rgba(0, 0, 0, 0.05);
+}
+
+
+.page-header.navbar .hor-menu .navbar-nav > li .dropdown-menu {
+    background: #292929;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.05), 0 1px 0 rgba(0, 0, 0, 0.05);
+}
+
+
+.page-sidebar .page-sidebar-menu > li > a, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu > li > a {
+    color: #b4bcc8;
+}
+
+a {
+    color: #e35b5a;
+    text-decoration: none;
+}
+
+
+.library-menu span {
+    background-color: #fff;
+}
+
+.library-menu.active span.one,
+.library-menu.active span.two,
+.library-menu.active span.three {
+    background-color: #fff;
+}
+
+.page-sidebar .page-sidebar-menu .sub-menu {
+    background: #191919;
+}
+
+.project-list .progress-bar {
+    background-color: #e35b5a;
+}
+
+.progress-mini .progress-bar {
+    background-color: #e35b5a;
+}
+
+.btn-link:hover, .btn-link:focus, .btn-link:active, .btn-link.active, .open .dropdown-toggle.btn-link {
+    color: #e35b5a;
+}
+
+.fc-event, .fc-agenda .fc-event-time, .fc-event a {
+    background-color: #e35b5a;
+    border-color: #e35b5a;
+}
+
+.fc-state-active {
+    background-color: #e35b5a;
+    border-color: #e35b5a;
+    color: #ffffff;
+}
+
+.ms-container .ms-selectable li.ms-hover,
+.ms-container .ms-selection li.ms-hover {
+    cursor: pointer;
+    color: #fff;
+    text-decoration: none;
+    background-color: #e35b5a;
+}
+
+.slick-prev::before, .slick-next::before {
+    color: #e35b5a !important;
+}
+
+.slick-list {
+    border: 1px solid #292929;
+}
+
+.slick-dots li.slick-active button::before {
+    color: #292929;
+}
+
+.product-price {
+    background-color: #e35b5a;
+}
+
+.pagination > .active > a, .pagination > .active > a:focus, .pagination > .active > a:hover, .pagination > .active > span, .pagination > .active > span:focus, .pagination > .active > span:hover {
+    background-color: #e35b5a;
+    border-color: #e35b5a;
+}
+
+.faq-item a {
+    color: #292929;
+}
+
+    .faq-item a:hover {
+        color: #e35b5a;
+    }
+
+.product-name:hover, .product-name:focus {
+    color: #e35b5a;
+}
+
+.text-navy {
+    color: #e35b5a;
+}
+
+.form-control:focus {
+    border-color: #e35b5a;
+}
+
+.profile-page .page-content {
+    background: #e35b5a none repeat scroll 0 0;
+}
+
+
+
+table.dataTable.dtr-inline.collapsed > tbody > tr > td:first-child::before, table.dataTable.dtr-inline.collapsed > tbody > tr > th:first-child::before {
+    background-color: #e35b5a;
+}
+
+
+table.dataTable.dtr-inline.collapsed > tbody > tr.parent > td:first-child::before, table.dataTable.dtr-inline.collapsed > tbody > tr.parent > th:first-child::before {
+    background-color: #e35b5a;
+}
+
+.irs-from::after, .irs-to::after, .irs-single::after {
+    border-color: #e35b5a rgba(0, 0, 0, 0) rgba(0, 0, 0, 0);
+}
+
+.irs-from, .irs-to, .irs-single {
+    background: #e35b5a none repeat scroll 0 0;
+}
+
+.page-header.navbar .search-form {
+    background: rgba(0, 0, 0, 0.3) none repeat scroll 0 0;
+    border: none;
+}
+
+
+.page-header.navbar .btn.submit {
+    color: #fff;
+    margin-top: 3px;
+}
+
+.page-header .form-control::-moz-placeholder {
+    color: #fff;
+    opacity: 1;
+}
+
+.amcharts-graph-column-front:hover {
+    fill: #4dbecb;
+    stroke: #4dbecb;
+}
+
+.jqvmap-zoomin, .jqvmap-zoomout {
+    background: #e35b5a none repeat scroll 0 0;
+}

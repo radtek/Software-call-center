@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="65ea219939b04c869aae0927cb99e5bf" Name="Diagram1">
+        <EntityTypeShape EntityType="Model.AspNetRole" Width="1.5" PointX="2" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.AspNetUserClaim" Width="1.5" PointX="2" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.AspNetUserLogin" Width="1.5" PointX="2" PointY="7" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.AspNetUser" Width="1.5" PointX="4.25" PointY="3.375" IsExpanded="true" />
+        <AssociationConnector Association="Model.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.AspNetUserRoles" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="Model.Customer" Width="1.5" PointX="6.25" PointY="3.375" />
+        <AssociationConnector Association="Model.AspNetUserCustomers" />
+        <EntityTypeShape EntityType="Model.Server" Width="1.5" PointX="8.375" PointY="6.75" />
+        <EntityTypeShape EntityType="Model.Extension" Width="1.5" PointX="6.25" PointY="6.75" />
+        <AssociationConnector Association="Model.ServerExtensions" />
+        <EntityTypeShape EntityType="Model.Rate" Width="1.5" PointX="12.5" PointY="5.5" />
+        <EntityTypeShape EntityType="Model.Station" Width="1.5" PointX="8.375" PointY="3.375" />
+        <AssociationConnector Association="Model.FK_Workflows_To_Table" />
+        <EntityTypeShape EntityType="Model.Session" Width="1.5" PointX="10.5" PointY="5.5" />
+        <AssociationConnector Association="Model.FK_Sessions_To_Rate" />
+        <AssociationConnector Association="Model.FK_Sessions_To_Server" />
+        <AssociationConnector Association="Model.FK_Sessions_To_Station" />
+        <EntityTypeShape EntityType="Model.Encoder" Width="1.5" PointX="10.5" PointY="1.625" />
+        <AssociationConnector Association="Model.FK_Sessions_To_Encoder" />
+        <AssociationConnector Association="Model.FK_Stations_To_Encoder" />
+        <EntityTypeShape EntityType="Model.EncoderType" Width="1.5" PointX="12.5" PointY="1.625" />
+        <AssociationConnector Association="Model.FK_EncoderTypes_To_Encoder" />
+        <AssociationConnector Association="Model.AspNetUserStations" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

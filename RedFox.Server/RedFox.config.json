@@ -1,0 +1,9 @@
+{
+  "Server": {
+    "Name": "",
+    "IPv4": "",
+    "IPv6": "",
+    "TTL": 30,
+    "MaxSessions": 10
+  }
+}

@@ -1,0 +1,478 @@
+/*!
+ * AdminUI v1.0 (http://adminui-v1.0.bittyfox.com/)
+ * Copyright AdminUI Company &copy; 2017 
+ * 
+ */
+ 
+@media (min-width:769px){ 
+
+/*------------------------------------------------
+
+page sidebar  class for large
+
+-------------------------------------------------*/
+
+.page-sidebar-closed .page-sidebar .page-sidebar-menu > li:hover {
+    display: block;
+    position: relative;
+    width: 256px;
+    z-index: 10000;
+}
+
+.page-sidebar-closed .page-sidebar .page-sidebar-menu > li:hover > .sub-menu {
+    border-radius: 0 0 4px 4px;
+    display: block;
+    left: 46px;
+    margin-top: 0;
+    position: absolute;
+    top: 100%;
+    width: 210px;
+    z-index: 2000;
+    opacity: .9;
+    background-color: #364150;
+    height: auto;
+    overflow: visible;
+    max-height: none;
+}
+
+.page-sidebar-closed .page-sidebar .page-sidebar-menu > li:hover > a span.title {
+    display: inline;
+    padding-left: 30px;
+} 
+
+ .page-sidebar-closed .page-sidebar .page-sidebar-menu .open .sub-menu, .page-sidebar-closed .page-sidebar .page-sidebar-menu > li.heading {
+    display: none;
+}
+
+}
+
+@media (max-width: 768px) {
+
+.row { margin: 0; padding: 0 }
+.mtop5{
+    margin-top: 5px;
+}
+.mtop10{
+    margin-top: 10px;
+}
+.mtop15{
+    margin-top: 15px;
+}
+
+.mtop20{
+    margin-top: 20px;
+}
+
+/*------------------------------------------------
+
+dashboard
+
+-------------------------------------------------*/
+
+.dashboard-header{
+    margin: 0;
+}
+
+table.dataTable.nowrap th, table.dataTable.nowrap td {
+    white-space: inherit;
+}
+
+
+.stat-list {
+    margin-top: 15px;
+}
+
+.list-widget ul > li {
+    padding: 13px 0px;
+}
+
+/*------------------------------------------------
+
+scrollup
+
+-------------------------------------------------*/
+
+.scrollup {
+    display: none !important;
+}
+
+/*------------------------------------------------
+
+page-container
+
+-------------------------------------------------*/
+
+.page-header-fixed .page-container {
+    margin-top: 0;
+}
+
+.page-header-fixed .page-container {
+    margin-top: 0;
+}
+
+
+/*------------------------------------------------
+
+page-header
+
+-------------------------------------------------*/
+
+.page-header.navbar .top-menu .navbar-nav > li.dropdown:last-child {
+    float: right;
+    padding-right: 0;
+}
+
+
+.page-header.navbar .page-logo {
+    background-color: #e35b5a;
+    width: 100%;
+}
+.page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-menu::after ,.page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-menu::before {
+    border: none;}
+
+.page-sidebar-closed .page-sidebar .page-sidebar-menu .sub-menu li > a { 
+    padding: 6px 15px 6px 43px;
+}
+
+.page-content-wrapper .page-content, .page-sidebar-closed .page-content-wrapper .page-content{
+    margin-left: 0;
+}
+.page-header.navbar .search-form.search-form-expanded {
+    border: 1px solid #222;
+    width: 100% !important;
+}
+
+.hor-menu.hor-menu-show {
+    background: #000 none repeat scroll 0 0;
+    display: block !important;
+    position: absolute;
+    top: 45px;
+    width: 100%;
+    z-index: 99;
+}
+
+.page-header.navbar .top-menu .hor-menu .navbar-nav > li > .dropdown-menu {
+    min-width: 100%;
+    position: static;
+}
+
+.page-header.navbar .top-menu .hor-menu .navbar-nav > li > .dropdown-menu .dropdown-menu {
+    display: block;
+    left: 0;
+    min-width: 100%;
+    position: static;
+}
+.hor-menu ul li {
+    width: 100%;
+}
+.top-nev-mobile-togal {
+    background: #f2f2f2 none repeat scroll 0 0;
+    color: #000;
+    cursor: pointer;
+    display: none;
+    font-size: 14px;
+    padding: 13px 15px;
+    position: absolute;
+    right: 45px;
+}
+
+.library-menu {
+    background: #000 none repeat scroll 0 0;
+    height: 46px;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+.page-header.navbar .top-menu .navbar-nav {    
+    margin-bottom: 0;
+    margin-top: 0;  
+}
+.page-header.navbar{
+	height: auto;
+ 	
+}
+.page-sidebar-closed .page-header.navbar .page-logo {   
+    overflow: visible;
+      display: block;
+    float: left;
+    height: 46px;
+    transition: all 0.4s ease 0s;
+    width: 100%;   
+}
+.page-sidebar {
+   margin-right: 0;
+    position: fixed;
+    width: 0;
+    z-index: 2001;
+}
+.page-sidebar-fixed.page-sidebar-closed .page-sidebar {
+    display: block;   
+}
+.page-sidebar-closed .page-sidebar li.sidebar-search-wrapper:hover {
+    width: 100% !important;
+}
+.page-sidebar-closed .page-sidebar .page-sidebar-menu li:hover {
+    width: 100%;
+}
+.page-sidebar-closed .page-sidebar .page-sidebar-menu .nav-item:hover > .sub-menu {
+    display: block;
+    left: 0;
+    position: relative;
+    top: 0;
+    width: 100%;
+}
+.page-sidebar-closed .page-sidebar .page-sidebar-menu > li > a span {
+    display: inline-block;
+}
+
+
+.page-sidebar-closed .page-sidebar, .page-sidebar-closed .page-sidebar .page-sidebar-menu.page-sidebar-menu-closed {
+    display: block;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+}
+.page-sidebar-fixed.page-sidebar-closed .page-sidebar {
+    display: block;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    overflow: auto; 
+     margin-top: 0;
+}
+
+.slimScrollDiv, .page-sidebar-menu.page-header-fixed{
+    height: auto !important;
+    overflow: auto !important;
+    margin-top: 95px;
+}
+
+.page-sidebar .page-sidebar-menu, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu {
+    list-style: outside none none;
+    margin: 0;
+    padding: 0;
+    margin-bottom: 100px;
+}
+
+.page-sidebar-closed .page-sidebar .page-sidebar-menu > li:hover > a span.title {
+    padding-left: 0;
+}
+
+.page-sidebar .page-sidebar-menu .open .sub-menu, 
+ {
+    display: block;
+}
+
+.page-header.navbar .top-menu .navbar-nav > li.dropdown {   
+    position: static;
+}
+
+.page-header.navbar .top-menu .navbar-nav > li > .dropdown-menu {
+    background: #292929 none repeat scroll 0 0;
+    border-radius: 0;
+    left: auto;
+    position: absolute;
+    right: 0;
+    width: 100%;
+}
+
+.page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-menu > li > a {
+    color: #fff;
+}
+
+.dropdown-menu > li > a > [class*=" icon-"], .dropdown-menu > li > a > [class^="icon-"] {
+    color: #fff;
+}
+.page-header.navbar .top-menu .navbar-nav > li > .dropdown-menu.menuBig {
+    color: #ffffff;
+    padding: 12px 0 0;
+    width: 100%;
+}
+
+.page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-menu::before{display: none;}
+.page-header.navbar .top-menu .navbar-nav > li > .dropdown-menu.menuBig .text-muted {
+    color: #f2f2f2;
+}
+
+.page-header.navbar .top-menu .navbar-nav > li > .dropdown-menu .link-block a {
+    color: #fff;
+    font-size: 12px;
+}
+.navbar-fixed-bottom, .navbar-fixed-top {
+    z-index: 9999;
+}
+ .page-header.navbar .top-menu .dropdown-menu > li > a:focus,  .page-header.navbar .top-menu .dropdown-menu > li > a:hover {
+    background-color: #191919;   
+}
+
+.page-header.navbar .search-form.search-form-expanded {
+    display: table;
+    float: none;
+    margin: auto;
+    transition: all 0.6s ease 0s;
+    width: 120px;
+}
+.page-header.navbar .search-form.search-form-expanded.open {
+    width: 100% !important;
+    position: static;
+}
+.page-header.navbar .top-menu .navbar-nav { 
+    margin: 0;
+    width: 100%;
+}
+
+/*------------------------------------------------
+
+article page
+
+-------------------------------------------------*/
+
+.article .widgets-container {
+    padding: 40px 10px;
+}
+
+.article h1 {   
+    font-size: 22px;
+}
+.article-title {
+    margin: 40px 0 15px;
+}
+
+.form-horizontal .form-group {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+
+/*------------------------------------------------
+
+dashboard2
+
+-------------------------------------------------*/
+
+#chartdiv3 {
+    top: 15px;
+}
+
+/*------------------------------------------------
+
+Login Page
+
+-------------------------------------------------*/
+ 
+
+.loginscreen.middle-box {
+    width: 100%;
+}
+
+/*------------------------------------------------
+
+login layout full
+
+-------------------------------------------------*/
+
+ 
+.login-layout-full .page-brand-info {
+   display: none;
+}
+.loginColumns {
+    margin: auto;
+    padding: 20px;
+    position: static;
+}
+.loginColumns .copyR {
+    position: static;  
+}
+
+ 
+/*------------------------------------------------
+
+Tab
+
+-------------------------------------------------*/
+
+.tabs-container .nav-tabs > li {
+    width: 100%;
+}
+
+/*simplelineicons*/
+.simplelineicons-demo .item-box {
+    width: 100%;
+}
+
+.glyphicons-demo ul li {    
+    width: 50%;
+}
+
+.project-list table.dataTable > tbody > tr.child ul {
+    width: 100%;
+}
+
+
+/*------------------------------------------------
+
+page 404
+
+-------------------------------------------------*/
+
+
+.middle-box h1.head {
+    font-size: 105px;
+    margin-top: 10px;
+}
+
+.middle-box {
+    max-width: 95%;
+}
+
+.error-wrapper {
+    height: auto;
+    min-height: 500px;
+}
+
+.flot-chart-box-d2 {height: auto;}
+
+
+/*------------------------------------------------
+
+ Multi Select
+
+-------------------------------------------------*/
+
+.ms-container {
+    width: auto;
+}
+
+/*------------------------------------------------
+
+mail image
+
+-------------------------------------------------*/
+
+.file-box {
+    width: 100%;
+}
+
+.page-sidebar-fixed .page-sidebar {
+    top: 0px;
+    position: static;
+}
+
+.project-list table.dataTable.dtr-inline.collapsed > tbody > tr > td:first-child::before, .project-list table.dataTable.dtr-inline.collapsed > tbody > tr > th:first-child::before{
+  top: 36%;
+}
+
+.footer {
+    position: static;
+}
+
+.page-content-wrapper .page-content{
+	padding: 0;
+}
+
+
+
+}
+
+

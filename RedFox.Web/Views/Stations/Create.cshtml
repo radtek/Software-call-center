@@ -1,0 +1,161 @@
+﻿@{
+    ViewBag.Title = "Stations";
+}
+
+@section Head {
+<link rel="stylesheet" href="~/Content/Skins/square/green.css" />
+<link rel="stylesheet" href="https://unpkg.com/eonasdan-bootstrap-datetimepicker@4.17.47/build/css/bootstrap-datetimepicker.min.css">
+<link rel="stylesheet" href="https://unpkg.com/vue-multiselect@2.0.6/dist/vue-multiselect.min.css">
+}
+
+<div class="row wrapper border-bottom page-heading">
+    <div class="col-lg-12">
+        <h2>Stations </h2>
+        <ol class="breadcrumb">
+            <li> <a href="/">Home</a> </li>
+            <li> <a href="/stations">Stations</a> </li>
+            <li class="active"> <strong>Create</strong> </li>
+        </ol>
+    </div>
+    <div class="col-lg-12"> </div>
+</div>
+<div class="wrapper-content ">
+    <div class="row">
+        <div class="col-lg-12 top20">
+            <div class="ibox-title">
+                <h5>Create new station</h5>
+            </div>
+            <div class="widgets-container">
+                <form class="form-horizontal m-t-xs">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Name</label>
+                        <div class="col-sm-9 margin-bottom-10">
+                            <input class="form-control m-t-xxs" v-model="station.Name">
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Address</label>
+                        <div class="col-sm-9 margin-bottom-10">
+                            <input class="form-control m-t-xxs" v-model="station.Address">
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">ZIP</label>
+                        <div class="col-sm-9 margin-bottom-10">
+                            <input class="form-control m-t-xxs" v-model="station.ZIP">
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">State</label>
+                        <div class="col-sm-9 margin-bottom-10">
+                            <input class="form-control m-t-xxs" v-model="station.State">
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Input type</label>
+                        <div class="col-sm-9">
+                            <select class="form-control bottom15" v-model="station.Consumer.Name">
+                                <option v-for="consumer in consumers" v-bind:value="consumer.Name">{{ consumer.Name }}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Endpoint</label>
+                        <div class="col-sm-9 margin-bottom-10">
+                            <input class="form-control m-t-xxs" v-model="station.Consumer.Endpoint">
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="form-group">
+                        <div class="col-sm-9 col-sm-offset-3">
+                            <button type="submit" class="btn aqua m-t-xs bottom15-xs" v-on:click.prevent="submit">Submit</button>
+                            <button type="button" class="btn default m-t-xs bottom15-xs" v-on:click.prevent="cancel">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="~/Scripts/Vendor/icheck.min.js"></script>
+
+    <script src="https://unpkg.com/moment@2.18.1/min/moment.min.js"></script>
+    <script src="https://unpkg.com/eonasdan-bootstrap-datetimepicker@4.17.47/build/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="https://unpkg.com/vue-bootstrap-datetimepicker"></script>
+    <script type="text/javascript" src="https://unpkg.com/vue-multiselect@2.0.3/dist/vue-multiselect.min.js"></script>
+    <script>
+        $(function() {
+            $('input.iCheck').iCheck({
+                 checkboxClass: 'icheckbox_square-green',
+                    radioClass: 'iradio_square-green',
+                  increaseArea: '20%'
+            });
+        });
+
+        Vue.component('date-picker', VueBootstrapDatetimePicker.default);
+
+        new Vue({
+            el: '#app',
+            components: {
+                Multiselect: window.VueMultiselect.default
+            },
+            data: {
+                error    : null,
+                consumers: [],
+                providers: [],
+                station  : {
+                    Name    : '',
+                    Consumer: {
+                        Name     : '',
+                        Direction: 'in',
+                        Endpoint : ''
+                    },
+                    Transcriber: {
+                        Name: null,
+                    },
+                    Provider: {
+                        Name     : '',
+                        Endpoint : '',
+                        Direction: 'out',
+                        Settings : ''
+                    }
+                },
+                options: [],
+                value: [],
+            },
+            methods: {
+                cancel: function() { window.location.href = '/stations'; },
+                submit: function (e) {
+                    redfox.post('api/stations', this.station).then(function (response) {
+                        document.location.href =  '/stations';
+                    }).catch(function (e) {
+                        self.error = e.message;
+                    });
+                }
+            },
+            mounted: function() {
+                var self  = this;
+
+                redfox.get('api/extensions/consumers').then(function(response) {
+                    self.consumers = response.data;
+                }).catch(function (e) {
+                    self.error = e.message;
+                });
+
+                redfox.get('api/extensions/providers').then(function(response) { 
+                    self.providers = response.data;                    
+                }).catch(function (e) {
+                    self.error = e.message;
+                });                
+            }
+        });
+    </script>
+}

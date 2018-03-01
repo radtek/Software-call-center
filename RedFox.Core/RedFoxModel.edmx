@@ -1,0 +1,1079 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AspNetRoles">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetUserClaims">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="ClaimType" Type="nvarchar(max)" />
+          <Property Name="ClaimValue" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="AspNetUserCustomers">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="CustomerId" />
+          </Key>
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="CustomerId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetUserLogins">
+          <Key>
+            <PropertyRef Name="LoginProvider" />
+            <PropertyRef Name="ProviderKey" />
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="LoginProvider" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="ProviderKey" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetUserRoles">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="RoleId" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetUsers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="256" />
+          <Property Name="EmailConfirmed" Type="bit" Nullable="false" />
+          <Property Name="PasswordHash" Type="nvarchar(max)" />
+          <Property Name="SecurityStamp" Type="nvarchar(max)" />
+          <Property Name="PhoneNumber" Type="nvarchar(max)" />
+          <Property Name="PhoneNumberConfirmed" Type="bit" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="bit" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="datetime" />
+          <Property Name="LockoutEnabled" Type="bit" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="int" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetUserStations">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="StationId" />
+          </Key>
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="StationId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Customers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Discount" Type="float" />
+        </EntityType>
+        <EntityType Name="Encoders">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EncoderTypeId" Type="int" Nullable="false" />
+          <Property Name="StationId" Type="int" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+          <Property Name="IpAddress" Type="varchar" MaxLength="50" />
+          <Property Name="Port" Type="int" />
+          <Property Name="PhoneNumber" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="EncoderTypes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+          <Property Name="Protocol" Type="int" Nullable="false" />
+          <Property Name="ProviderJson" Type="varchar" MaxLength="256" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Extensions">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Version" Type="varchar" MaxLength="10" />
+          <Property Name="Type" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Rates">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Rates" Type="varchar" MaxLength="256" Nullable="false" />
+          <Property Name="Valid" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ServerExtensions">
+          <Key>
+            <PropertyRef Name="ServerId" />
+            <PropertyRef Name="ExtensionId" />
+          </Key>
+          <Property Name="ServerId" Type="int" Nullable="false" />
+          <Property Name="ExtensionId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Servers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="IPv4" Type="varchar" MaxLength="15" />
+          <Property Name="IPv6" Type="varchar" MaxLength="39" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="TTL" Type="int" Nullable="false" />
+          <Property Name="Seen" Type="datetime" Nullable="false" />
+          <Property Name="MaxSessions" Type="int" />
+        </EntityType>
+        <EntityType Name="Sessions">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ServerId" Type="int" />
+          <Property Name="RateId" Type="int" Nullable="false" />
+          <Property Name="EncoderId" Type="int" Nullable="false" />
+          <Property Name="StationId" Type="int" Nullable="false" />
+          <Property Name="State" Type="int" Nullable="false" />
+          <Property Name="StartTime" Type="datetime" />
+          <Property Name="EndTime" Type="datetime" />
+          <Property Name="WordCount" Type="int" Nullable="false" />
+          <Property Name="Schedule" Type="datetime" />
+          <Property Name="Length" Type="int" />
+          <Property Name="CRON" Type="varchar" MaxLength="50" />
+          <Property Name="Record" Type="bit" Nullable="false" />
+          <Property Name="Muted" Type="bit" Nullable="false" />
+          <Property Name="Paused" Type="bit" Nullable="false" />
+          <Property Name="Path" Type="varchar" MaxLength="255" />
+          <Property Name="ConsumerJson" Type="varchar" MaxLength="255" />
+          <Property Name="EncoderJson" Type="varchar" MaxLength="255" />
+          <Property Name="NotificationsJson" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Stations">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PulseId" Type="int" />
+          <Property Name="CustomerId" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="ConsumerJson" Type="varchar" MaxLength="256" Nullable="false" />
+          <Property Name="NotificationsJson" Type="varchar" MaxLength="256" />
+          <Property Name="Location" Type="varchar" MaxLength="256" />
+        </EntityType>
+        <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserClaims" Type="Self.AspNetUserClaims" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserClaims">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserCustomers_dbo_AspNetUsers_UserId">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserCustomers" Type="Self.AspNetUserCustomers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserCustomers">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserCustomers_dbo_Customers_CustomerId">
+          <End Role="Customers" Type="Self.Customers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserCustomers" Type="Self.AspNetUserCustomers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserCustomers">
+              <PropertyRef Name="CustomerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserLogins" Type="Self.AspNetUserLogins" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserLogins">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
+          <End Role="AspNetRoles" Type="Self.AspNetRoles" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserRoles" Type="Self.AspNetUserRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetRoles">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserRoles">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserRoles" Type="Self.AspNetUserRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserRoles">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserStations_dbo_AspNetUsers_UserId">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserStations" Type="Self.AspNetUserStations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserStations">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserStations_dbo_Stations_StationId">
+          <End Role="Stations" Type="Self.Stations" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserStations" Type="Self.AspNetUserStations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Stations">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserStations">
+              <PropertyRef Name="StationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_ServerExtensions_dbo_Extensions_ExtensionId">
+          <End Role="Extensions" Type="Self.Extensions" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ServerExtensions" Type="Self.ServerExtensions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Extensions">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ServerExtensions">
+              <PropertyRef Name="ExtensionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_ServerExtensions_dbo_Servers_ServerId">
+          <End Role="Servers" Type="Self.Servers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ServerExtensions" Type="Self.ServerExtensions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Servers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ServerExtensions">
+              <PropertyRef Name="ServerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EncoderTypes_To_Encoder">
+          <End Role="EncoderTypes" Type="Self.EncoderTypes" Multiplicity="1" />
+          <End Role="Encoders" Type="Self.Encoders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EncoderTypes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Encoders">
+              <PropertyRef Name="EncoderTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sessions_To_Encoder">
+          <End Role="Encoders" Type="Self.Encoders" Multiplicity="1" />
+          <End Role="Sessions" Type="Self.Sessions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Encoders">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Sessions">
+              <PropertyRef Name="EncoderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sessions_To_Rate">
+          <End Role="Rates" Type="Self.Rates" Multiplicity="1" />
+          <End Role="Sessions" Type="Self.Sessions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rates">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Sessions">
+              <PropertyRef Name="RateId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sessions_To_Server">
+          <End Role="Servers" Type="Self.Servers" Multiplicity="0..1" />
+          <End Role="Sessions" Type="Self.Sessions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Servers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Sessions">
+              <PropertyRef Name="ServerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sessions_To_Station">
+          <End Role="Stations" Type="Self.Stations" Multiplicity="1" />
+          <End Role="Sessions" Type="Self.Sessions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Stations">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Sessions">
+              <PropertyRef Name="StationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Stations_To_Customer">
+          <End Role="Customers" Type="Self.Customers" Multiplicity="1" />
+          <End Role="Stations" Type="Self.Stations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Stations">
+              <PropertyRef Name="CustomerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Stations_To_Encoder">
+          <End Role="Stations" Type="Self.Stations" Multiplicity="0..1" />
+          <End Role="Encoders" Type="Self.Encoders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Stations">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Encoders">
+              <PropertyRef Name="StationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ModelStoreContainer">
+          <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUserCustomers" EntityType="Self.AspNetUserCustomers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUserStations" EntityType="Self.AspNetUserStations" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Customers" EntityType="Self.Customers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Encoders" EntityType="Self.Encoders" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EncoderTypes" EntityType="Self.EncoderTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Extensions" EntityType="Self.Extensions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Rates" EntityType="Self.Rates" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ServerExtensions" EntityType="Self.ServerExtensions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Servers" EntityType="Self.Servers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Sessions" EntityType="Self.Sessions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Stations" EntityType="Self.Stations" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserCustomers_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserCustomers_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserCustomers" EntitySet="AspNetUserCustomers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserCustomers_dbo_Customers_CustomerId" Association="Self.FK_dbo_AspNetUserCustomers_dbo_Customers_CustomerId">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="AspNetUserCustomers" EntitySet="AspNetUserCustomers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
+            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
+            <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserStations_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserStations_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserStations" EntitySet="AspNetUserStations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserStations_dbo_Stations_StationId" Association="Self.FK_dbo_AspNetUserStations_dbo_Stations_StationId">
+            <End Role="Stations" EntitySet="Stations" />
+            <End Role="AspNetUserStations" EntitySet="AspNetUserStations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_ServerExtensions_dbo_Extensions_ExtensionId" Association="Self.FK_dbo_ServerExtensions_dbo_Extensions_ExtensionId">
+            <End Role="Extensions" EntitySet="Extensions" />
+            <End Role="ServerExtensions" EntitySet="ServerExtensions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_ServerExtensions_dbo_Servers_ServerId" Association="Self.FK_dbo_ServerExtensions_dbo_Servers_ServerId">
+            <End Role="Servers" EntitySet="Servers" />
+            <End Role="ServerExtensions" EntitySet="ServerExtensions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EncoderTypes_To_Encoder" Association="Self.FK_EncoderTypes_To_Encoder">
+            <End Role="EncoderTypes" EntitySet="EncoderTypes" />
+            <End Role="Encoders" EntitySet="Encoders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sessions_To_Encoder" Association="Self.FK_Sessions_To_Encoder">
+            <End Role="Encoders" EntitySet="Encoders" />
+            <End Role="Sessions" EntitySet="Sessions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sessions_To_Rate" Association="Self.FK_Sessions_To_Rate">
+            <End Role="Rates" EntitySet="Rates" />
+            <End Role="Sessions" EntitySet="Sessions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sessions_To_Server" Association="Self.FK_Sessions_To_Server">
+            <End Role="Servers" EntitySet="Servers" />
+            <End Role="Sessions" EntitySet="Sessions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sessions_To_Station" Association="Self.FK_Sessions_To_Station">
+            <End Role="Stations" EntitySet="Stations" />
+            <End Role="Sessions" EntitySet="Sessions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Stations_To_Customer" Association="Self.FK_Stations_To_Customer">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="Stations" EntitySet="Stations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Stations_To_Encoder" Association="Self.FK_Stations_To_Encoder">
+            <End Role="Stations" EntitySet="Stations" />
+            <End Role="Encoders" EntitySet="Encoders" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="AspNetRole">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="AspNetUsers" Relationship="Self.AspNetUserRoles" FromRole="AspNetRoles" ToRole="AspNetUsers" />
+        </EntityType>
+        <EntityType Name="AspNetUserClaim">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ClaimType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ClaimValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUser" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUserClaims" ToRole="AspNetUsers" />
+        </EntityType>
+        <EntityType Name="AspNetUserLogin">
+          <Key>
+            <PropertyRef Name="LoginProvider" />
+            <PropertyRef Name="ProviderKey" />
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="LoginProvider" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ProviderKey" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="AspNetUser" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUserLogins" ToRole="AspNetUsers" />
+        </EntityType>
+        <EntityType Name="AspNetUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumberConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
+          <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="AspNetUserClaims" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserClaims" />
+          <NavigationProperty Name="AspNetUserLogins" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserLogins" />
+          <NavigationProperty Name="AspNetRoles" Relationship="Self.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
+          <NavigationProperty Name="Customers" Relationship="Model.AspNetUserCustomers" FromRole="AspNetUser" ToRole="Customer" />
+          <NavigationProperty Name="Stations" Relationship="Model.AspNetUserStations" FromRole="AspNetUser" ToRole="Station" />
+        </EntityType>
+        <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserClaims" Type="Self.AspNetUserClaim" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserClaims">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserLogins" Type="Self.AspNetUserLogin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserLogins">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AspNetUserRoles">
+          <End Role="AspNetRoles" Type="Self.AspNetRole" Multiplicity="*" />
+          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRole" />
+          <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaim" />
+          <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogin" />
+          <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUser" />
+          <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
+          </AssociationSet>
+          <AssociationSet Name="AspNetUserRoles" Association="Self.AspNetUserRoles">
+            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+          </AssociationSet>
+          <EntitySet Name="Customers" EntityType="Model.Customer" />
+          <AssociationSet Name="AspNetUserCustomers" Association="Model.AspNetUserCustomers">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+          </AssociationSet>
+          <EntitySet Name="Servers" EntityType="Model.Server" a:GetterAccess="Public" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+          <EntitySet Name="Extensions" EntityType="Model.Extension" />
+          <AssociationSet Name="ServerExtensions" Association="Model.ServerExtensions">
+            <End Role="Extension" EntitySet="Extensions" />
+            <End Role="Server" EntitySet="Servers" />
+          </AssociationSet>
+          <EntitySet Name="Rates" EntityType="Model.Rate" />
+          <EntitySet Name="Stations" EntityType="Model.Station" />
+          <AssociationSet Name="FK_Workflows_To_Table" Association="Model.FK_Workflows_To_Table">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="Station" EntitySet="Stations" />
+          </AssociationSet>
+          <EntitySet Name="Sessions" EntityType="Model.Session" />
+          <AssociationSet Name="FK_Sessions_To_Rate" Association="Model.FK_Sessions_To_Rate">
+            <End Role="Rate" EntitySet="Rates" />
+            <End Role="Session" EntitySet="Sessions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sessions_To_Server" Association="Model.FK_Sessions_To_Server">
+            <End Role="Server" EntitySet="Servers" />
+            <End Role="Session" EntitySet="Sessions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sessions_To_Station" Association="Model.FK_Sessions_To_Station">
+            <End Role="Station" EntitySet="Stations" />
+            <End Role="Session" EntitySet="Sessions" />
+          </AssociationSet>
+          <EntitySet Name="Encoders" EntityType="Model.Encoder" />
+          <AssociationSet Name="FK_Sessions_To_Encoder" Association="Model.FK_Sessions_To_Encoder">
+            <End Role="Encoder" EntitySet="Encoders" />
+            <End Role="Session" EntitySet="Sessions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Stations_To_Encoder" Association="Model.FK_Stations_To_Encoder">
+            <End Role="Station" EntitySet="Stations" />
+            <End Role="Encoder" EntitySet="Encoders" />
+          </AssociationSet>
+          <EntitySet Name="EncoderTypes" EntityType="Model.EncoderType" />
+          <AssociationSet Name="FK_EncoderTypes_To_Encoder" Association="Model.FK_EncoderTypes_To_Encoder">
+            <End Role="EncoderType" EntitySet="EncoderTypes" />
+            <End Role="Encoder" EntitySet="Encoders" />
+          </AssociationSet>
+          <AssociationSet Name="AspNetUserStations" Association="Model.AspNetUserStations">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="Station" EntitySet="Stations" />
+          </AssociationSet>
+          </EntityContainer>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUsers" Relationship="Model.AspNetUserCustomers" FromRole="Customer" ToRole="AspNetUser" />
+          <NavigationProperty Name="Stations" Relationship="Model.FK_Workflows_To_Table" FromRole="Customer" ToRole="Station" />
+          <Property Name="Discount" Type="Double" />
+        </EntityType>
+        <Association Name="AspNetUserCustomers">
+          <End Type="Model.Customer" Role="Customer" Multiplicity="*" />
+          <End Type="Model.AspNetUser" Role="AspNetUser" Multiplicity="*" />
+        </Association>
+        <EntityType Name="Server" a:TypeAccess="Public" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IPv4" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="IPv6" Type="String" MaxLength="39" FixedLength="false" Unicode="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="TTL" Type="Int32" Nullable="false" />
+          <Property Name="Seen" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MaxSessions" Type="Int32" />
+          <NavigationProperty Name="Extensions" Relationship="Model.ServerExtensions" FromRole="Server" ToRole="Extension" />
+          <NavigationProperty Name="Sessions" Relationship="Model.FK_Sessions_To_Server" FromRole="Server" ToRole="Session" />
+        </EntityType>
+        <EntityType Name="Extension">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Version" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Servers" Relationship="Model.ServerExtensions" FromRole="Extension" ToRole="Server" />
+          <Property Name="Type" Type="Model.ExtensionType" Nullable="false" />
+        </EntityType>
+        <Association Name="ServerExtensions">
+          <End Type="Model.Extension" Role="Extension" Multiplicity="*" />
+          <End Type="Model.Server" Role="Server" Multiplicity="*" />
+        </Association>
+        <EnumType Name="ExtensionType">
+          <Member Name="Consumer" Value="100" />
+          <Member Name="Transcriber" Value="200" />
+          <Member Name="Converter" Value="300" />
+          <Member Name="Provider" Value="400" />
+          <Member Name="MessageClient" Value="700" />
+          <Member Name="NotificationTarget" Value="800" />
+          <Member Name="Recorder" Value="500" />
+        </EnumType>
+        <EntityType Name="Rate">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Rates" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="Valid" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Sessions" Relationship="Model.FK_Sessions_To_Rate" FromRole="Rate" ToRole="Session" />
+        </EntityType>
+        <EntityType Name="Station">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustomerId" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="ConsumerJson" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="NotificationsJson" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Customer" Relationship="Model.FK_Workflows_To_Table" FromRole="Station" ToRole="Customer" />
+          <NavigationProperty Name="Sessions" Relationship="Model.FK_Sessions_To_Station" FromRole="Station" ToRole="Session" />
+          <NavigationProperty Name="Encoders" Relationship="Model.FK_Stations_To_Encoder" FromRole="Station" ToRole="Encoder" />
+          <NavigationProperty Name="AspNetUsers" Relationship="Model.AspNetUserStations" FromRole="Station" ToRole="AspNetUser" />
+          <Property Name="PulseId" Type="Int32" />
+          <Property Name="Location" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="FK_Workflows_To_Table">
+          <End Type="Model.Customer" Role="Customer" Multiplicity="1" />
+          <End Type="Model.Station" Role="Station" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Station">
+              <PropertyRef Name="CustomerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Session">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ServerId" Type="Int32" />
+          <Property Name="RateId" Type="Int32" Nullable="false" />
+          <Property Name="StationId" Type="Int32" Nullable="false" />
+          <Property Name="State" Type="Model.SessionState" Nullable="false" />
+          <Property Name="StartTime" Type="DateTime" Precision="3" />
+          <Property Name="EndTime" Type="DateTime" Precision="3" />
+          <Property Name="WordCount" Type="Int32" Nullable="false" />
+          <Property Name="Schedule" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Rate" Relationship="Model.FK_Sessions_To_Rate" FromRole="Session" ToRole="Rate" />
+          <NavigationProperty Name="Server" Relationship="Model.FK_Sessions_To_Server" FromRole="Session" ToRole="Server" />
+          <NavigationProperty Name="Station" Relationship="Model.FK_Sessions_To_Station" FromRole="Session" ToRole="Station" />
+          <Property Name="EncoderId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Encoder" Relationship="Model.FK_Sessions_To_Encoder" FromRole="Session" ToRole="Encoder" />
+          <Property Name="Length" Type="Int32" />
+          <Property Name="CRON" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Record" Type="Boolean" Nullable="false" />
+          <Property Name="Muted" Type="Boolean" Nullable="false" />
+          <Property Name="Paused" Type="Boolean" Nullable="false" />
+          <Property Name="Path" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ConsumerJson" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="EncoderJson" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="NotificationsJson" Type="String" MaxLength="255" FixedLength="false" Unicode="false" a:GetterAccess="Private" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+        </EntityType>
+        <Association Name="FK_Sessions_To_Rate">
+          <End Type="Model.Rate" Role="Rate" Multiplicity="1" />
+          <End Type="Model.Session" Role="Session" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rate">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Session">
+              <PropertyRef Name="RateId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sessions_To_Server">
+          <End Type="Model.Server" Role="Server" Multiplicity="0..1" />
+          <End Type="Model.Session" Role="Session" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Server">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Session">
+              <PropertyRef Name="ServerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sessions_To_Station">
+          <End Type="Model.Station" Role="Station" Multiplicity="1" />
+          <End Type="Model.Session" Role="Session" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Station">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Session">
+              <PropertyRef Name="StationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EnumType Name="SessionState">
+          <Member Name="Scheduled" Value="100" />
+          <Member Name="Active" Value="200" />
+          <Member Name="Finished" Value="800" />
+        </EnumType>
+        <EntityType Name="Encoder">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EncoderTypeId" Type="Int32" Nullable="false" />
+          <Property Name="StationId" Type="Int32" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Sessions" Relationship="Model.FK_Sessions_To_Encoder" FromRole="Encoder" ToRole="Session" />
+          <NavigationProperty Name="Station" Relationship="Model.FK_Stations_To_Encoder" FromRole="Encoder" ToRole="Station" />
+          <Property Name="IpAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Port" Type="Int32" />
+          <NavigationProperty Name="EncoderType" Relationship="Model.FK_EncoderTypes_To_Encoder" FromRole="Encoder" ToRole="EncoderType" />
+        </EntityType>
+        <Association Name="FK_Sessions_To_Encoder">
+          <End Type="Model.Encoder" Role="Encoder" Multiplicity="1" />
+          <End Type="Model.Session" Role="Session" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Encoder">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Session">
+              <PropertyRef Name="EncoderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Stations_To_Encoder">
+          <End Type="Model.Station" Role="Station" Multiplicity="0..1" />
+          <End Type="Model.Encoder" Role="Encoder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Station">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Encoder">
+              <PropertyRef Name="StationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="EncoderType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Protocol" Type="Model.ProtocolType" Nullable="false" />
+          <Property Name="ProviderJson" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Encoders" Relationship="Model.FK_EncoderTypes_To_Encoder" FromRole="EncoderType" ToRole="Encoder" />
+        </EntityType>
+        <Association Name="FK_EncoderTypes_To_Encoder">
+          <End Type="Model.EncoderType" Role="EncoderType" Multiplicity="1" />
+          <End Type="Model.Encoder" Role="Encoder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EncoderType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Encoder">
+              <PropertyRef Name="EncoderTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EnumType Name="ProtocolType">
+          <Member Name="Unknown" Value="0" />
+          <Member Name="Telnet" />
+          <Member Name="Serial" />
+          <Member Name="Phone" />
+        </EnumType>
+        <Association Name="AspNetUserStations">
+          <End Type="Model.AspNetUser" Role="AspNetUser" Multiplicity="*" />
+          <End Type="Model.Station" Role="Station" Multiplicity="*" />
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="AspNetRoles">
+            <EntityTypeMapping TypeName="Model.AspNetRole">
+              <MappingFragment StoreEntitySet="AspNetRoles">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetUserClaims">
+            <EntityTypeMapping TypeName="Model.AspNetUserClaim">
+              <MappingFragment StoreEntitySet="AspNetUserClaims">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ClaimType" ColumnName="ClaimType" />
+                <ScalarProperty Name="ClaimValue" ColumnName="ClaimValue" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetUserLogins">
+            <EntityTypeMapping TypeName="Model.AspNetUserLogin">
+              <MappingFragment StoreEntitySet="AspNetUserLogins">
+                <ScalarProperty Name="LoginProvider" ColumnName="LoginProvider" />
+                <ScalarProperty Name="ProviderKey" ColumnName="ProviderKey" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetUsers">
+            <EntityTypeMapping TypeName="Model.AspNetUser">
+              <MappingFragment StoreEntitySet="AspNetUsers">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
+                <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
+                <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
+                <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
+                <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="AspNetUserRoles" TypeName="Model.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
+            <EndProperty Name="AspNetRoles">
+              <ScalarProperty Name="Id" ColumnName="RoleId" />
+            </EndProperty>
+            <EndProperty Name="AspNetUsers">
+              <ScalarProperty Name="Id" ColumnName="UserId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="Customers">
+            <EntityTypeMapping TypeName="Model.Customer">
+              <MappingFragment StoreEntitySet="Customers">
+                <ScalarProperty Name="Discount" ColumnName="Discount" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="AspNetUserCustomers" TypeName="Model.AspNetUserCustomers" StoreEntitySet="AspNetUserCustomers">
+            <EndProperty Name="AspNetUser">
+              <ScalarProperty Name="Id" ColumnName="UserId" />
+            </EndProperty>
+            <EndProperty Name="Customer">
+              <ScalarProperty Name="Id" ColumnName="CustomerId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="Servers">
+            <EntityTypeMapping TypeName="Model.Server">
+              <MappingFragment StoreEntitySet="Servers">
+                <ScalarProperty Name="MaxSessions" ColumnName="MaxSessions" />
+                <ScalarProperty Name="Seen" ColumnName="Seen" />
+                <ScalarProperty Name="TTL" ColumnName="TTL" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="IPv6" ColumnName="IPv6" />
+                <ScalarProperty Name="IPv4" ColumnName="IPv4" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Extensions">
+            <EntityTypeMapping TypeName="Model.Extension">
+              <MappingFragment StoreEntitySet="Extensions">
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Version" ColumnName="Version" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="ServerExtensions" TypeName="Model.ServerExtensions" StoreEntitySet="ServerExtensions">
+            <EndProperty Name="Server">
+              <ScalarProperty Name="Id" ColumnName="ServerId" />
+            </EndProperty>
+            <EndProperty Name="Extension">
+              <ScalarProperty Name="Id" ColumnName="ExtensionId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="Rates">
+            <EntityTypeMapping TypeName="Model.Rate">
+              <MappingFragment StoreEntitySet="Rates">
+                <ScalarProperty Name="Valid" ColumnName="Valid" />
+                <ScalarProperty Name="Rates" ColumnName="Rates" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Stations">
+            <EntityTypeMapping TypeName="Model.Station">
+              <MappingFragment StoreEntitySet="Stations">
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="PulseId" ColumnName="PulseId" />
+                <ScalarProperty Name="NotificationsJson" ColumnName="NotificationsJson" />
+                <ScalarProperty Name="ConsumerJson" ColumnName="ConsumerJson" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sessions">
+            <EntityTypeMapping TypeName="Model.Session">
+              <MappingFragment StoreEntitySet="Sessions">
+                <ScalarProperty Name="NotificationsJson" ColumnName="NotificationsJson" />
+                <ScalarProperty Name="EncoderJson" ColumnName="EncoderJson" />
+                <ScalarProperty Name="ConsumerJson" ColumnName="ConsumerJson" />
+                <ScalarProperty Name="Path" ColumnName="Path" />
+                <ScalarProperty Name="Paused" ColumnName="Paused" />
+                <ScalarProperty Name="Muted" ColumnName="Muted" />
+                <ScalarProperty Name="Record" ColumnName="Record" />
+                <ScalarProperty Name="CRON" ColumnName="CRON" />
+                <ScalarProperty Name="Length" ColumnName="Length" />
+                <ScalarProperty Name="EncoderId" ColumnName="EncoderId" />
+                <ScalarProperty Name="Schedule" ColumnName="Schedule" />
+                <ScalarProperty Name="WordCount" ColumnName="WordCount" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="StationId" ColumnName="StationId" />
+                <ScalarProperty Name="RateId" ColumnName="RateId" />
+                <ScalarProperty Name="ServerId" ColumnName="ServerId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Encoders">
+            <EntityTypeMapping TypeName="Model.Encoder">
+              <MappingFragment StoreEntitySet="Encoders">
+                <ScalarProperty Name="Port" ColumnName="Port" />
+                <ScalarProperty Name="IpAddress" ColumnName="IpAddress" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="StationId" ColumnName="StationId" />
+                <ScalarProperty Name="EncoderTypeId" ColumnName="EncoderTypeId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EncoderTypes">
+            <EntityTypeMapping TypeName="Model.EncoderType">
+              <MappingFragment StoreEntitySet="EncoderTypes">
+                <ScalarProperty Name="ProviderJson" ColumnName="ProviderJson" />
+                <ScalarProperty Name="Protocol" ColumnName="Protocol" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="AspNetUserStations" TypeName="Model.AspNetUserStations" StoreEntitySet="AspNetUserStations">
+            <EndProperty Name="Station">
+              <ScalarProperty Name="Id" ColumnName="StationId" />
+            </EndProperty>
+            <EndProperty Name="AspNetUser">
+              <ScalarProperty Name="Id" ColumnName="UserId" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

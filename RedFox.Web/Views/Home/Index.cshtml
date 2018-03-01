@@ -1,0 +1,142 @@
+﻿@{
+    ViewBag.Title = "Dashboard";
+}
+
+<div class="wrapper-content ">
+    <div class="row">
+        <!-- begin col-1 -->
+        <div class="col-md-4 col-sm-12 mtop15 top10">
+            <div class="widget widget-stats  box-shadow red-bg">
+                <div class="stats-icon stats-icon-lg"><i class="fa fa-clock-o fa-fw"></i></div>
+                <div class="stats-title">Total minutes this month</div>
+                <div class="stats-number">{{ stats.Minutes }}</div>
+                <div class="stats-progress progress">
+                    <div style="width: 40.5%;" class="progress-bar"></div>
+                </div>
+                <div class="stats-desc">More than random (40.5%)</div>
+            </div>
+        </div>
+        <!-- end col-1 -->
+        <!-- begin col-2 -->
+        <div class="col-md-4 col-sm-12 top10">
+            <div class="widget widget-stats  box-shadow aqua-bg ">
+                <div class="stats-icon stats-icon-lg"><i class="fa fa-line-chart fa-fw"></i></div>
+                <div class="stats-title">Total Expenses</div>
+                <div class="stats-number">$ {{ stats.Cost }}</div>
+                <div class="stats-progress progress">
+                    <div style="width: 70.1%;" class="progress-bar"></div>
+                </div>
+                <div class="stats-desc">Higher than random (70.1%)</div>
+            </div>
+        </div>
+        <!-- end col-2 -->
+        <!-- begin col-3 -->
+        <div class="col-md-4 col-sm-12 top10">
+            <div class="widget widget-stats  box-shadow green-bg">
+                <div class="stats-icon stats-icon-lg"><i class="fa fa-cc fa-fw"></i></div>
+                <div class="stats-title">Total Words</div>
+                <div class="stats-number">{{ stats.Words }}</div>
+                <div class="stats-progress progress">
+                    <div style="width: 70.1%;" class="progress-bar"></div>
+                </div>
+                <div class="stats-desc">Higher than random (70.1%)</div>
+            </div>
+        </div>
+        <!-- end col-3 -->
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="alert alert-danger alert-dismissible" role="alert" v-if="error">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <strong>Error!</strong> <span v-text="error"></span>. Try to reload the page; or <a class="alert-link" href="#">contact support</a> if the problem persists.
+            </div>
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Active sessions</h5>
+                </div>
+                <div class="ibox-content collapse in">
+                    <div class="widgets-container">
+                        <div>
+                            <table id="table" class="display nowrap table responsive nowrap table-striped" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Station</th>
+                                        <th>Started ({{ timezone }})</th>
+                                        <th>Status</th>
+                                        <th>Time</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="session in sessions">
+                                        <td>{{ session.Id        }}</td>
+                                        <td>{{ session.Name      }}</td>
+                                        <td>{{ session.StartTime }}</td>
+                                        <td>{{ session.State     }}</td>
+                                        <td>{{ session.Elapsed   }}</td>
+                                        <td><button class="btn blue" v-if="session.Id" v-on:click.stop="edit(session.Id)"> View </button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="panel-footer text-right">
+                                <a href="~/sessions" class="btn red btn-sm">View All Sessions</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://unpkg.com/moment@2.18.1/min/moment.min.js"></script>
+    <script>
+        new Vue({
+            el     : '#app',
+            data   : {
+                error   : null,
+                sessions: [ { Name: 'Gimme a sec ...' } ],
+                timezone:  /\((.*)\)/.exec(new Date().toString())[1],
+                stats   : {
+                    Cost   : 0,
+                    Minutes: 0,
+                    Words  : 0
+                }
+            },
+            methods: {
+                edit: function (id) { window.location.href = '/sessions/edit/' + id; },
+            },
+            mounted: function () {
+                var self = this;
+
+                redfox.get('api/stats').then(function (response) { 
+                    self.stats = response.data;
+                }).catch(function (error) {
+                    self.error = error.message;
+                });
+
+                redfox.get('api/sessions?status=active').then(function (response) {
+                    self.sessions = response.data;
+
+                    if (self.sessions.length == 0) {
+                        self.sessions.push({
+                            Name: 'No active sessions'
+                        });
+                    }
+
+                    else {
+                        for (var i = 0; i < self.sessions.length; i++) {
+                            self.sessions[i].StartTime = moment.utc(self.sessions[i].StartTime).local().format('llll');
+                            self.sessions[i].Elapsed   = moment().startOf('day').seconds(self.sessions[i].Elapsed).format('H[h] mm[m] ss[s]');
+                        }
+                    }
+                }).catch(function (error) {
+                    self.error = error.message;
+                })
+            }
+        });
+    </script>
+}

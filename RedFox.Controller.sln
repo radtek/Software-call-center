@@ -1,0 +1,98 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2006
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedFox.Logger", "RedFox.Logger\RedFox.Logger.csproj", "{658EF771-1BF5-4C5C-9D43-F3F22EDB4C60}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedFox.Shared", "RedFox.Shared\RedFox.Shared.csproj", "{4722BE3E-A688-4575-AFEA-21E45A858D53}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedFox.Core", "RedFox.Core\RedFox.Core.csproj", "{805258F9-2CBC-4AD6-8272-B8EF51613456}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NotificationTargets", "NotificationTargets", "{E08457FC-A7CD-4CC2-B624-FC5478C3741D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedFox.NotificationTargets.Telegram", "RedFox.NotificationTargets.Telegram\RedFox.NotificationTargets.Telegram.csproj", "{C9DFA7DB-76F3-44B5-8A69-CAD06DC98651}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedFox.WebAPI", "RedFox.WebAPI\RedFox.WebAPI.csproj", "{D82324B3-9A51-4436-9059-FCD4316F5374}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedFox.Controller", "RedFox.Controller\RedFox.Controller.csproj", "{8DD116CA-6C9D-40BB-81E7-0C1B0B923B57}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MessageClients", "MessageClients", "{7B1A525F-EEED-4D1E-A108-8B3B38DC7E8D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedFox.MessageClients.RabbitMQ", "RedFox.MessageClients.RabbitMQ\RedFox.MessageClients.RabbitMQ.csproj", "{AE51F1FC-FCC6-48E3-AD36-1D47799D78D7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedFox.Reports", "RedFox.Reports\RedFox.Reports.csproj", "{7134E542-4D24-4C34-8AC0-9682233707A4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedFox.ControllerHost", "RedFox.ControllerHost\RedFox.ControllerHost.csproj", "{A7D6CED7-7E30-4A9F-B332-670E83AC8F78}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "RedFox.Controller.Installer", "RedFox.Controller.Installer\RedFox.Controller.Installer.vdproj", "{1B7FEB8F-9246-4C29-84B6-8A472E9C4A0D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedFox.NotificationTargets.TwilioSMS", "RedFox.NotificationTargets.TwilioSMS\RedFox.NotificationTargets.TwilioSMS.csproj", "{857C2D37-8164-44F7-A531-F6222B26C4BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedFox.Controller.Shared", "RedFox.Controller.Shared\RedFox.Controller.Shared.csproj", "{4132A235-C7C3-40E1-8137-0EDC946DADD0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{658EF771-1BF5-4C5C-9D43-F3F22EDB4C60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{658EF771-1BF5-4C5C-9D43-F3F22EDB4C60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{658EF771-1BF5-4C5C-9D43-F3F22EDB4C60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{658EF771-1BF5-4C5C-9D43-F3F22EDB4C60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4722BE3E-A688-4575-AFEA-21E45A858D53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4722BE3E-A688-4575-AFEA-21E45A858D53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4722BE3E-A688-4575-AFEA-21E45A858D53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4722BE3E-A688-4575-AFEA-21E45A858D53}.Release|Any CPU.Build.0 = Release|Any CPU
+		{805258F9-2CBC-4AD6-8272-B8EF51613456}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{805258F9-2CBC-4AD6-8272-B8EF51613456}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{805258F9-2CBC-4AD6-8272-B8EF51613456}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{805258F9-2CBC-4AD6-8272-B8EF51613456}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9DFA7DB-76F3-44B5-8A69-CAD06DC98651}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9DFA7DB-76F3-44B5-8A69-CAD06DC98651}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9DFA7DB-76F3-44B5-8A69-CAD06DC98651}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9DFA7DB-76F3-44B5-8A69-CAD06DC98651}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D82324B3-9A51-4436-9059-FCD4316F5374}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D82324B3-9A51-4436-9059-FCD4316F5374}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D82324B3-9A51-4436-9059-FCD4316F5374}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D82324B3-9A51-4436-9059-FCD4316F5374}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DD116CA-6C9D-40BB-81E7-0C1B0B923B57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DD116CA-6C9D-40BB-81E7-0C1B0B923B57}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DD116CA-6C9D-40BB-81E7-0C1B0B923B57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DD116CA-6C9D-40BB-81E7-0C1B0B923B57}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE51F1FC-FCC6-48E3-AD36-1D47799D78D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE51F1FC-FCC6-48E3-AD36-1D47799D78D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE51F1FC-FCC6-48E3-AD36-1D47799D78D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE51F1FC-FCC6-48E3-AD36-1D47799D78D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7134E542-4D24-4C34-8AC0-9682233707A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7134E542-4D24-4C34-8AC0-9682233707A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7134E542-4D24-4C34-8AC0-9682233707A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7134E542-4D24-4C34-8AC0-9682233707A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7D6CED7-7E30-4A9F-B332-670E83AC8F78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7D6CED7-7E30-4A9F-B332-670E83AC8F78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7D6CED7-7E30-4A9F-B332-670E83AC8F78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7D6CED7-7E30-4A9F-B332-670E83AC8F78}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B7FEB8F-9246-4C29-84B6-8A472E9C4A0D}.Debug|Any CPU.ActiveCfg = Debug
+		{1B7FEB8F-9246-4C29-84B6-8A472E9C4A0D}.Release|Any CPU.ActiveCfg = Release
+		{857C2D37-8164-44F7-A531-F6222B26C4BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{857C2D37-8164-44F7-A531-F6222B26C4BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{857C2D37-8164-44F7-A531-F6222B26C4BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{857C2D37-8164-44F7-A531-F6222B26C4BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4132A235-C7C3-40E1-8137-0EDC946DADD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4132A235-C7C3-40E1-8137-0EDC946DADD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4132A235-C7C3-40E1-8137-0EDC946DADD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4132A235-C7C3-40E1-8137-0EDC946DADD0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C9DFA7DB-76F3-44B5-8A69-CAD06DC98651} = {E08457FC-A7CD-4CC2-B624-FC5478C3741D}
+		{AE51F1FC-FCC6-48E3-AD36-1D47799D78D7} = {7B1A525F-EEED-4D1E-A108-8B3B38DC7E8D}
+		{857C2D37-8164-44F7-A531-F6222B26C4BF} = {E08457FC-A7CD-4CC2-B624-FC5478C3741D}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {35B4F92B-4304-41CA-9095-C2CDFBDBE1B2}
+	EndGlobalSection
+EndGlobal

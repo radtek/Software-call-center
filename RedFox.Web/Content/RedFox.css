@@ -1,0 +1,53 @@
+﻿.navbar-title {
+    font-size          : 23px;
+    color              : #ffffff;
+    margin-top         : 4px;
+}
+
+.validation-summary-errors ul {
+       padding          : 0;
+    text-align          : left;
+}
+
+.validation-summary-errors ul li {
+    list-style-type     : none
+}
+
+.modal {
+    text-align          : center;
+}
+
+@media screen and (min-width: 768px) {
+    .modal:before {
+        display         : inline-block;
+        vertical-align  : middle;
+        content         : " ";
+        height          : 100%;
+    }
+}
+
+.modal-dialog {
+    display             : inline-block;
+    text-align          : left;
+    vertical-align      : middle;
+}
+
+.modal-footer .btn + .btn {
+    margin-bottom       : 5px;
+    margin-left         : 5px;
+}
+
+.was-validated .form-control:invalid {
+    border-color        : #dc3545;
+}
+
+.was-validated .form-control:valid {
+    border-color        : #28a745;
+}
+
+code {
+    font-size           : 120%;
+    color               : #000000;
+    white-space         : nowrap;
+    background-color    : #ffffff;
+}

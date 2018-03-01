@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedFox.Web", "RedFox.Web\RedFox.Web.csproj", "{513F1009-C08E-431E-9BD5-C518BB386804}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedFox.Web.Tests", "RedFox.Web.Tests\RedFox.Web.Tests.csproj", "{A9F6B25B-1F19-4BEC-87E4-886993FDD68C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{513F1009-C08E-431E-9BD5-C518BB386804}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{513F1009-C08E-431E-9BD5-C518BB386804}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{513F1009-C08E-431E-9BD5-C518BB386804}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{513F1009-C08E-431E-9BD5-C518BB386804}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9F6B25B-1F19-4BEC-87E4-886993FDD68C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9F6B25B-1F19-4BEC-87E4-886993FDD68C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9F6B25B-1F19-4BEC-87E4-886993FDD68C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9F6B25B-1F19-4BEC-87E4-886993FDD68C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {35B4F92B-4304-41CA-9095-C2CDFBDBE1B2}
+	EndGlobalSection
+EndGlobal

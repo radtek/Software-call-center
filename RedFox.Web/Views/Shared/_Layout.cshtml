@@ -1,0 +1,227 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>@ViewBag.Title of Red Fox</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/Content/Vendor/dataTables.bootstrap.min.css" />
+
+    <link rel="stylesheet" href="~/Content/Vendor/font-awesome.min.css" />
+    <link rel="stylesheet" href="~/Content/page-header.css">
+
+    <link rel="stylesheet" href="~/Content/Buttons.css">
+    <link rel="stylesheet" href="~/Content/Main.css">
+    <!-- media css for responsive  -->
+    <link rel="stylesheet" href="~/Content/Main.media.css">
+    <link rel="stylesheet" href="~/Content/Red.css">
+    <link rel="stylesheet" href="~/Content/RedFox.css">
+    
+    @RenderSection("head", required: false)
+</head>
+<body class="page-header-fixed ">
+    <script>
+        // TODO Redirect to error page if browser does not support Session Storage
+        if (typeof (Storage) === undefined) {
+            alert('No session storage available');
+        }
+
+        // Immediately redirect to Log In page if no access token is available at all
+        if (!sessionStorage.getItem('access_token')) {
+            document.location.href = '/account/login'
+        }
+    </script>
+    <div>
+        <div class="page-header navbar navbar-fixed-top">
+            <div class="page-header-inner ">
+                <div class="page-logo">
+                    <a href="~/">  </a>
+                </div>
+                <div class="library-menu"> <span class="one">-</span> <span class="two">-</span> <span class="three">-</span> </div><div class="top-nev-mobile-togal"><i class="glyphicon glyphicon-cog"></i></div>
+                <div class="top-menu">
+                    <ul class="nav navbar-nav">
+                        <li class="dropdown dropdown-user">
+                            <div class="navbar-title"></div>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav pull-right" style="margin-right: 5px;">
+                        <li class="dropdown dropdown-user">
+                            <a class="dropdown-toggle" href="javascript:;"> <span class="username username-hide-on-mobile"> </span></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"> </div>
+        <div class="page-container">
+            <div id="layout" class="page-sidebar-wrapper">
+                <div id="sidebar" class="page-sidebar">
+                    <ul class="page-sidebar-menu page-header-fixed ">
+                        <li class="nav-item" v-bind:class="{ active: dashboard }">
+                            <a class="nav-link" href="~/home"> <i class="fa fa-th-large"></i> <span class="title">Dashboard</span> </a>
+                        </li>
+                        <li class="nav-item" v-bind:class="{ active: sessions, open: sessions }">
+                            <a class="nav-link" href="~/sessions"> <i class="fa fa-cc"></i> <span class="title">Sessions</span> </a>
+                        </li>
+                        <li class="nav-item" v-bind:class="{ active: encoders, open: encoders }">
+                            <a class="nav-link" href="~/encoders"> <i class="fa fa-clone"></i> <span class="title">Encoders</span> </a>
+                        </li>
+                        <li class="nav-item" v-bind:class="{ active: stations, open: stations }" v-if="isCustomer()">
+                            <a class="nav-link" href="~/stations"> <i class="fa fa-square-o"></i> <span class="title">Stations</span> </a>
+                        </li>
+                        <li class="nav-item" v-bind:class="{ active: customers, open: customers }" v-if="isAdministrator()">
+                            <a class="nav-link" href="~/customers"> <i class="fa fa-group"></i> <span class="title">Customers</span> </a>
+                        </li>
+                        <li class="nav-item" v-bind:class="{ active: accounts, open: accounts }" v-if="isAdministrator()">
+                            <a class="nav-link" href="~/accounts"> <i class="fa fa-key"></i> <span class="title">Accounts</span> </a>
+                        </li>
+                        <li class="nav-item" v-bind:class="{ active: reports, open: reports }">
+                            <a class="nav-link" href="~/reports"> <i class="fa fa-list"></i> <span class="title">Reports</span> </a>
+                        </li>
+                        <li class="nav-item" v-bind:class="{ active: rates, open: rates }" v-if="isAdministrator()">
+                            <a class="nav-link" href="~/rates"> <i class="fa fa-usd"></i> <span class="title">Rates</span> </a>
+                        </li>
+                        <li class="nav-item" v-bind:class="{ active: userprofile, open: userprofile }">
+                            <a class="nav-link" href="~/account/userprofile"> <i class="fa fa-user"></i> <span class="title">My Profile</span> </a>
+                        </li>
+                        <li class="nav-item" v-bind:class="{ active: settings, open: settings }" v-if="isAdministrator()">
+                            <a class="nav-link" href="~/settings"> <i class="fa fa-gears"></i> <span class="title">Settings</span> </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="expired modal fade" tabindex="-1" role="dialog">
+                    <div class="modal-dialog ">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">{{ title }}</h4>
+                            </div>
+                            <div class="modal-body">
+                                {{ message }}
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-info" onclick="document.location.href = document.location.href" v-show="title == 'Network Error'">Try again</button>
+                                <button type="button" class="btn btn-success" onclick="document.location.href = '/account/login?returnURL=' + window.location.pathname">Login</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="page-content-wrapper animated fadeInRight">
+                <div id="app" class="page-content">
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+
+    <script src="~/Scripts/vue.min.js"></script>
+    
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.2/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/datejs/1.0/date.min.js"></script>
+    
+    <script src="~/Scripts/global.js"></script>
+
+    <script>
+        function expire(data, message) {
+            
+            if (message == 'Network Error') {
+                data.title   = message;
+                data.message = 'I\'m afraid I lost contact with the server. Try again later.';
+                
+            }
+
+            else {
+                sessionStorage.removeItem( 'access_token');
+                sessionStorage.removeItem('refresh_token');
+                sessionStorage.removeItem(      'expires');
+                sessionStorage.removeItem(   'token_type');
+                sessionStorage.removeItem(      'user_id');
+                sessionStorage.removeItem(    'user_name');
+                sessionStorage.removeItem(   'user_roles');
+            }
+
+            $('.username').text(message);
+            
+            $('.expired').modal({
+                backdrop: 'static',
+                keyboard: false
+            });
+        }
+
+        var app = new Vue({
+                  el: '#layout',
+                data: { 
+                    expires     : null,
+                    title       : 'Session expired',
+                    message     : 'Please login again to renew your session.',
+                    organization: 'PIX12'
+                },
+            computed: {
+                dashboard: function() { return window.location.pathname.toLowerCase().startsWith('/home'); },
+                 sessions: function() { return window.location.pathname.toLowerCase().startsWith('/sessions'); },
+                 stations: function() { return window.location.pathname.toLowerCase().startsWith('/stations'); },
+                  reports: function() { return window.location.pathname.toLowerCase().startsWith('/reports'); },
+              userprofile: function() { return window.location.pathname.toLowerCase().startsWith('/account/userprofile'); },
+                    rates: function() { return window.location.pathname.toLowerCase().startsWith('/rates'); },
+                 accounts: function() { return window.location.pathname.toLowerCase().startsWith('/accounts'); },
+                customers: function() { return window.location.pathname.toLowerCase().startsWith('/customers'); },
+                 encoders: function() { return window.location.pathname.toLowerCase().startsWith('/encoders'); },
+                 settings: function() { return window.location.pathname.toLowerCase().startsWith('/settings'); },
+            },
+            methods: {
+                isAdministrator: function () { return sessionStorage.getItem('user_roles').indexOf('Administrator') >= 0; },
+                isCustomer     : function () { return sessionStorage.getItem('user_roles').indexOf('Customer')      >= 0 || this.isAdministrator(); }
+            },
+            mounted: function () {
+                $('.library-menu').on('click', function(e) {
+                    e.preventDefault();
+
+                    $(this).toggleClass("active");
+                    $('body').toggleClass('page-sidebar-closed');
+                });
+                
+                $('.nav-link').on('click', function() {
+                    if ($(this).parent("li").hasClass('open')) {
+                        $(this).parent("li").removeClass('open');
+                    } else {
+                        $('.nav-item').removeClass('open');
+                        $(this).parents("li").addClass('open');
+                    }
+                });
+
+                var self = this;
+                var auth = axios.create();
+                
+                // Set the station or customer name in the header
+                $('.navbar-title').text(sessionStorage.getItem('organization').toUpperCase());
+
+                // Check if access token is available and can be refreshed
+                auth.post('oauth/token', 'grant_type=refresh_token&refresh_token=' + sessionStorage.getItem('refresh_token')).then(function(response) {
+                    var expires    = response.data.expires_in * 1000;
+                    var expiretime = new Date();
+
+                        sessionStorage.setItem( 'access_token', response.data.access_token);
+                        sessionStorage.setItem('refresh_token', response.data.refresh_token);
+                        sessionStorage.setItem(      'expires', expires);
+                        
+                        expiretime.setUTCMilliseconds(expires);
+
+                        $('.username').text('Inactivity will cause session expiration at ' + expiretime.toString('hh:mm tt'));
+
+                        setTimeout(function() { expire(self, 'Inactivity has caused session expiration'); }, expires);
+                    })
+                    .catch(function(e) { 
+                        expire(self, e.message);
+                    });
+            }
+        });
+    </script>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

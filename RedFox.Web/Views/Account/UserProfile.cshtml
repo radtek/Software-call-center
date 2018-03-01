@@ -1,0 +1,134 @@
+﻿@{
+    ViewBag.Title = "Profile";
+}
+
+@section Head {
+    <link rel="stylesheet" href="~/Content/Skins/square/green.css" />
+}
+
+<div class="row wrapper border-bottom page-heading">
+    <div class="col-lg-12">
+        <h2>My Profile </h2>
+        <ol class="breadcrumb">
+            <li> <a href="/">Home</a> </li>
+            <li> <a href="~/workflows">User</a> </li>
+            <li class="active"> <strong>Profile</strong> </li>
+        </ol>
+    </div>
+    <div class="col-lg-12"> </div>
+</div>
+<div class="wrapper-content ">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="alert alert-danger alert-dismissible" role="alert" v-if="error">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <strong>Error!</strong> <span v-text="error"></span>. Try to reload the page; or <a class="alert-link" href="#">contact support</a> if the problem persists.
+            </div>
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>User profile</h5>
+                </div>
+                <div class="widgets-container">
+                    <form class="form-horizontal m-t-xs">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Name</label>
+                            <div class="col-sm-9">
+                                <input class="form-control m-t-xxs" v-model="user.UserName">
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Email</label>
+                            <div class="col-sm-9">
+                                <input class="form-control m-t-xxs" v-model="user.Email">
+                                <p class="help-block" v-if="user.Email">
+                                    <span class="text-success" v-if="user.EmailConfirmed"><i class="fa fa-check"></i> confirmed</span>
+                                    <span class="text-danger" v-if="!user.EmailConfirmed"><i class="fa fa-times"></i> not confirmed</span>
+                                    <button v-if="user.UserName && !user.EmailConfirmed" class="btn green block bottom15" type="submit" v-on:click.prevent="submit($event)" v-html="confirmEmail"></button> 
+                                </p>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Phone</label>
+                            <div class="col-sm-9">
+                                <input class="form-control m-t-xxs" v-model="user.PhoneNumber">
+                                <p class="help-block" v-if="user.PhoneNumber">
+                                    <span class="text-success" v-if="user.PhoneNumberConfirmed"><i class="fa fa-check"></i> confirmed</span>
+                                    <span class="text-danger" v-if="!user.PhoneNumberConfirmed"><i class="fa fa-times"></i> not confirmed</span>
+                                </p>
+                            </div>
+                        </div>                     
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/Scripts/Vendor/icheck.min.js"></script>
+    
+    <script>
+        $(function() {
+            $('input.iCheck').iCheck({
+                 checkboxClass: 'icheckbox_square-green',
+                    radioClass: 'iradio_square-green',
+                  increaseArea: '20%'
+            });
+        });
+
+        new Vue({
+            el  : '#app',
+            data: {
+                error: null,
+                user : {
+                    UserName: null
+                },
+                confirmEmail: 'Confirm Email'
+            },
+            methods: {
+                submit: function (sender) {
+                    this.confirmEmail = '<img height="16px" src="/Content/Images/loading.gif" />';
+
+                    sender.target.disabled = true;
+
+                    if (this.user.Email == null) {
+                        form.classList.add("was-validated");
+
+                        sender.target.disabled = false;
+                        this.confirmEmail = 'Try again';
+                        return;
+                    }
+
+                    var self = this;
+                        self.error = null;
+
+                    auth.get('api/SendConfirmEmail?emailId=' + this.user.Email + "&siteurl=" + document.location.host)
+                        .then(function (response) {
+                            self.confirmEmail = "Link to Comfirm Email is sent."
+                        })
+                        .catch(function (e) {
+                            sender.target.disabled = false;
+                            self.error        = e.message;
+                            self.confirmEmail = 'Try again';
+
+                            if (e.response.status == 400) {
+                                self.error = 'Something went wrong, Please try again.';
+                            }
+                        });
+                }
+            },
+            mounted: function () {
+                var self = this;
+
+                redfox.get('api/accounts/' + sessionStorage.getItem('user_id')).then(function (response) {
+                    //debugger;
+                    self.user = response.data
+                }).catch(function (error) {
+                    self.error = error.message;
+                });
+            }
+        });
+    </script>
+}

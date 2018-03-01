@@ -1,0 +1,160 @@
+﻿@{
+    ViewBag.Title = "Encoders";
+}
+
+@section Head {
+    <link rel="stylesheet" href="~/Content/Skins/square/green.css" />
+    <link rel="stylesheet" href="https://unpkg.com/eonasdan-bootstrap-datetimepicker@4.17.47/build/css/bootstrap-datetimepicker.min.css">
+}
+
+<div class="row wrapper border-bottom page-heading">
+    <div class="col-lg-12">
+        <h2>Groups </h2>
+        <ol class="breadcrumb">
+            <li> <a href="/">Home</a> </li>
+            <li> <a href="/stations">Encoders</a> </li>
+            <li class="active"> <strong>Create</strong> </li>
+        </ol>
+    </div>
+    <div class="col-lg-12"> </div>
+</div>
+<div class="wrapper-content ">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox-title">
+                <h5>Register new encoder</h5>
+            </div>
+            <div class="widgets-container">
+                <form class="form-horizontal m-t-xs" role="form" id="form">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Name</label>
+                        <div class="col-sm-9 margin-bottom-10">
+                            <input class="form-control m-t-xxs" v-model="encoder.Name"  required="">
+                            <span v-if="!encoder.Name" class="left invalid-feedback bottom10"><small>Please provide a valid Name</small></span>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Ip Address</label>
+                        <div class="col-sm-9 margin-bottom-10">
+                            <input class="form-control m-t-xxs" v-model="encoder.IpAddress" @@change="check"> 
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Telnet Port</label>
+                        <div class="col-sm-9 margin-bottom-10">
+                            <input class="form-control m-t-xxs" v-model="encoder.Port">
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Phone</label>
+                        <div class="col-sm-9 margin-bottom-10">
+                            <input class="form-control m-t-xxs" v-model="encoder.Phone">
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Station</label>
+                        <div class="col-sm-9">
+                            <select class="form-control bottom15" v-model="encoder.StationId">
+                                <option v-for="station in stations" v-bind:value="station.Id">{{ station.Name }}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <hr/>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Encoder Type</label>
+                        <div class="col-sm-9">
+                            <select class="form-control bottom15" v-model="encoder.EncoderTypeId">
+                                <option v-for="encoder in EncoderTypes" v-bind:value="encoder.Id">{{ encoder.Name }}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="form-group">
+                        <div class="col-sm-9 col-sm-offset-3">
+                            <button type="submit" class="btn aqua m-t-xs bottom15-xs" v-on:click.prevent="submit">Submit</button>
+                            <button type="button" class="btn default m-t-xs bottom15-xs" v-on:click.prevent="cancel">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="~/Scripts/Vendor/icheck.min.js"></script>
+
+    <script src="https://unpkg.com/moment@2.18.1/min/moment.min.js"></script>
+    <script src="https://unpkg.com/eonasdan-bootstrap-datetimepicker@4.17.47/build/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="https://unpkg.com/vue-bootstrap-datetimepicker"></script>
+
+    <script>
+        new Vue({
+              el: '#app',
+            data: {
+                error       : null,
+                stations    : [],
+                EncoderTypes: [],
+                encoder     : {
+                    Name         : '',
+                    StationId    : null,
+                    IpAddress    : '',
+                    Port         : '',
+                    Phone        : '',
+                    EncoderTypeId: null
+                },
+                validIpAddress:false
+            },
+            methods: {
+                check: function () {
+                    var self     = this;
+                    var pattern2 = /^((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])$/;
+
+                    if (pattern2.test(self.encoder.IpAddress)) {
+                        self.validIpAddress = false;
+                    }
+                    else {
+                        self.validIpAddress = true;
+                    }
+                },
+                cancel: function() { window.location.href = '/encoders'; },
+                submit: function (e) {
+
+                    if (document.getElementById('form').checkValidity() == false) {
+                        form.classList.add("was-validated");
+
+                        sender.target.disabled = false;
+                        this.login = 'Try again';
+                        return;
+                    }
+                    redfox.post('api/encoders', this.encoder).then(function (response) {
+                        var returnURL = '/encoders';
+                        document.location.href = returnURL;
+                    }).catch(function (e) {
+                        self.error = e.message;
+                    });
+                }
+            },
+            mounted: function() {
+                var self  = this;
+
+                redfox.get('api/stations').then(function(response) {
+                    self.stations = response.data;
+                }).catch(function (e) {
+                    self.error = e.message;
+                    });
+
+                redfox.get('api/EncoderTypes').then(function (response) {
+                    self.EncoderTypes = response.data;
+                }).catch(function (e) {
+                    self.error = e.message;
+                });
+            }
+        });
+    </script>
+}

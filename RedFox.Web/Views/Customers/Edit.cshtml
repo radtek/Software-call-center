@@ -1,0 +1,118 @@
+﻿
+@{
+    ViewBag.Title = "Edit";
+}
+
+<div class="row wrapper border-bottom page-heading">
+    <div class="col-lg-12">
+        <h2>Edit Customer </h2>
+        <ol class="breadcrumb">
+            <li> <a href="~/home">Home</a> </li>
+            <li> <a href="~/customers">Customer</a> </li>
+            <li class="active"> <strong>Details</strong> </li>
+        </ol>
+    </div>
+    <div class="col-lg-12"> </div>
+</div>
+<div class="wrapper-content ">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="alert alert-danger alert-dismissible" role="alert" v-if="error">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <strong>Error!</strong> <span v-text="error"></span>. Try to reload the page; or <a class="alert-link" href="#">contact support</a> if the problem persists.
+            </div>
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Customer Details</h5>
+                </div>
+                <div class="widgets-container">
+                    <form class="form-horizontal m-t-xs" role="form" id="form">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Name</label>
+                            <div class="col-sm-9">
+                                <input class="form-control m-t-xxs" v-model="customer.Name" required="">
+                                <span v-if="!customer.Name" class="left invalid-feedback bottom10"><small>Please provide a valid name</small></span>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Discount</label>
+                            <div class="col-sm-9">
+                                <input class="form-control m-t-xxs" v-model="customer.Discount">
+                            </div>
+                        </div>
+                        <hr />
+                        <button class="btn green block full-width bottom15" type="submit" v-on:click.prevent="submit($event)" v-html="save"></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+<script>
+    function getQueryString(field, url) {
+        var href   = url ? url : window.location.href;
+        var reg    = new RegExp('[?&]' + field + '=([^&#]*)', 'i');
+        var string = reg.exec(href);
+
+        return string ? string[1] : null;
+    };
+    var editComponent = new Vue({
+        el: '#app',
+        data: {
+            error   : null,
+            customer: {
+                Name: ''
+            },
+            save    : 'Save'
+        },
+        methods: {
+            submit: function (sender) {
+                this.save = '<img height="16px" src="/Content/Images/loading.gif" />';
+
+                sender.target.disabled = true;
+
+                if (this.customer.Name == null || this.customer.Name== '') {
+                    sender.target.disabled = false;
+                    this.saveCustomer      = 'Save';
+
+                    return;
+                }
+
+                var self = this;
+                    self.error = null;
+
+                var id = getQueryString('id');
+
+                redfox.put('api/Customers?id=' + id, this.customer).then(function (response) {
+                    self.save = '';
+                
+                    var returnURL = getQueryString('returnURL');
+
+                    if (!returnURL)
+                         returnURL = '/Customers';
+                         
+                    document.location.href = returnURL;
+                }).catch(function (e) {
+                    sender.target.disabled = false;
+                    
+                    self.error = e.message;
+                    self.save  = 'Try again';
+                });
+            }
+        },
+        mounted: function () {
+            var self = this;
+            var id   = getQueryString('id');
+
+            redfox.get('api/Customers/' + id).then(function (response) {
+                //debugger;
+                self.customer = response.data
+            }).catch(function (error) {
+                self.error = error.message;
+            });
+        }
+    });
+</script>
+}

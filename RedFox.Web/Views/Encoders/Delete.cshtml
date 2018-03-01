@@ -1,0 +1,143 @@
+﻿@{
+    ViewBag.Title = "Encoders";
+}
+
+@section Head {
+    <link rel="stylesheet" href="~/Content/Skins/square/green.css" />
+    <link rel="stylesheet" href="https://unpkg.com/eonasdan-bootstrap-datetimepicker@4.17.47/build/css/bootstrap-datetimepicker.min.css">
+}
+
+<div class="row wrapper border-bottom page-heading">
+    <div class="col-lg-12">
+        <h2>Groups </h2>
+        <ol class="breadcrumb">
+            <li> <a href="/">Home</a> </li>
+            <li> <a href="/encoders">Encoders</a> </li>
+            <li class="active"> <strong>Delete</strong> </li>
+        </ol>
+    </div>
+    <div class="col-lg-12"> </div>
+</div>
+<div class="wrapper-content ">
+    <div class="row">
+        <div class="col-lg-12 top20">
+            <div class="ibox-title">
+                <h5>Delete encoder {{ encoder.Name }}</h5>
+            </div>
+            <div class="widgets-container">
+                <form class="form-horizontal m-t-xs" role="form" id="form">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Name</label>
+                        <div class="col-sm-9 margin-bottom-10">
+                            <input class="form-control m-t-xxs" v-model="encoder.Name" required="">
+                            <span v-if="!encoder.Name" class="left invalid-feedback bottom10"><small>Please provide a valid Name</small></span>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Ip Address</label>
+                        <div class="col-sm-9 margin-bottom-10">
+                            <input class="form-control m-t-xxs" v-model="encoder.IpAddress" @@change="check" required="">
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Port</label>
+                        <div class="col-sm-9 margin-bottom-10">
+                            <input class="form-control m-t-xxs" v-model="encoder.Port" required="">
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Phone</label>
+                        <div class="col-sm-9 margin-bottom-10">
+                            <input class="form-control m-t-xxs" v-model="encoder.Phone">
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Station #</label>
+                        <div class="col-sm-9">
+                            <input class="form-control m-t-xxs" v-model="encoder.StationId">
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Encoder Type #</label>
+                        <div class="col-sm-9">
+                            <input class="form-control m-t-xxs" v-model="encoder.EncoderTypeId">
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="form-group">
+                        <div class="col-sm-9 col-sm-offset-3">
+                            <button type="submit" class="btn red m-t-xs bottom15-xs" v-on:click.prevent="submit">Confirm Delete</button>
+                            <button type="button" class="btn default m-t-xs bottom15-xs" v-on:click.prevent="cancel">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="~/Scripts/Vendor/icheck.min.js"></script>
+
+    <script src="https://unpkg.com/moment@2.18.1/min/moment.min.js"></script>
+    <script src="https://unpkg.com/eonasdan-bootstrap-datetimepicker@4.17.47/build/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="https://unpkg.com/vue-bootstrap-datetimepicker"></script>
+
+    <script>
+        new Vue({
+              el: '#app',
+              data: {
+                  error  : null,
+                  encoder: {
+                      Name         : '',
+                      StationId    : null,
+                      IpAddress    : '',
+                      Port         : '',
+                      Phone        : '',
+                      EncoderTypeId: null
+                  },
+                  validIpAddress: false
+              },
+              methods: {
+                  cancel: function() { window.location.href = '/encoders'; },
+                  check : function() {
+                      var self = this;
+                      var pattern2 = /^((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])$/;
+                      if (pattern2.test(self.encoder.IpAddress)) {
+                          self.validIpAddress = false;
+                      }
+                      else {
+                          self.validIpAddress = true;
+                      }
+                  },
+                  submit: function (e) {
+                      var self = this;
+                      redfox.delete('api/encoders?id=' + self.encoder.Id).then(function (response) {
+                        var returnURL = '/encoders';
+                        document.location.href = returnURL;
+                    }).catch(function (e) {
+                        self.error = e.message;
+                    });
+                }
+            },
+            mounted: function() {
+                var self     = this;
+                var pathname = window.location.pathname;
+                var index    = pathname.lastIndexOf('/') + 1;
+                var id       = pathname.substring(index, pathname.length);
+                
+                redfox.get('api/encoders/' + id).then(function(response) {
+                    self.encoder = response.data;
+                }).catch(function (e) {
+                    self.error = e.message;
+                });
+            }
+        });
+    </script>
+}

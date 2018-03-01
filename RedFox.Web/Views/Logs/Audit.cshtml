@@ -1,0 +1,116 @@
+﻿
+@{
+    ViewBag.Title = "Audit";
+}
+
+@section Head {
+    <link rel="stylesheet" href="~/Content/Vendor/buttons.dataTables.min.css"     />
+    <link rel="stylesheet" href="~/Content/Vendor/dataTables.bootstrap.min.css"   />
+    <link rel="stylesheet" href="~/Content/Vendor/responsive.dataTables.min.css"  />
+    <link rel="stylesheet" href="~/Content/Vendor/fixedHeader.dataTables.min.css" />
+}
+
+<h1>TODO: Audit log must provide user, user agent, ip, etc.</h1>
+<div class="row wrapper border-bottom page-heading">
+    <div class="col-lg-12">
+        <h2>Audit logs </h2>
+        <ol class="breadcrumb">
+            <li> <a href="index.html">Home</a> </li>
+            <li> <a>Logs</a> </li>
+            <li class="active"> <strong>Audit</strong> </li>
+        </ol>
+    </div>
+    <div class="col-lg-12"> </div>
+</div>
+<div class="wrapper-content ">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Events</h5>
+                </div>
+                <div class="ibox-content collapse in">
+                    <div class="widgets-container">
+                        <div>
+                            <table id="table" class="display nowrap table responsive nowrap table-striped" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Level</th>
+                                        <th>Message</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="row in rows">
+                                        <td>{{ row.date    }}</td>
+                                        <td><span class="label label-sm" :class="cssClass(row.level)"> {{ row.level }} </span></td>
+                                        <td>{{ row.message }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <!-- dataTables-->
+    <script type="text/javascript" src="~/Scripts/Vendor/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/Vendor/dataTables.bootstrap.min.js"></script>
+
+    <script>
+        $('#table').DataTable();
+
+        new Vue({
+            el: '#app',
+            data: {
+                rows: []
+            },
+            mounted: function () {
+                var self = this;
+
+                redfox.get('api/logs/audit', {})
+                    .then(function (response) {
+                        self.rows = response.data;
+                        
+                        if (self.rows.length == 0) {
+                            self.rows.push({
+                                date   : '',
+                                level  : 'Info',
+                                message: 'No log available',
+                                class  : 'label-info'
+                            });
+                        }
+                    })
+                    .catch(function (error) {
+
+                    })
+            },
+            methods: {
+                createSession: function () {
+                    redfox.post('api/logs/audit', {})
+                        .then(function (response) {
+                            // TODO Check if response.code is 204
+                        })
+                        .catch(function (error) {
+                            alert('Error! ' + error);
+                        });
+                },
+                
+                cssClass: function (level) {
+                    if (level == 'INFO')
+                        return 'label-info';
+
+                    if (level == 'WARN')
+                        return 'label-warning';
+
+                    if (level == 'ERROR')
+                        return 'label-danger';
+                }
+            }
+        });
+    </script>
+}

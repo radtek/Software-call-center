@@ -1,0 +1,200 @@
+﻿@{
+    ViewBag.Title = "Profile";
+}
+
+@section Head {
+    <link rel="stylesheet" href="~/Content/Skins/square/green.css" />
+}
+
+<div class="row wrapper border-bottom page-heading">
+    <div class="col-lg-12">
+        <h2>My Profile </h2>
+        <ol class="breadcrumb">
+            <li> <a href="/">Home</a> </li>
+            <li> <a href="~/workflows">Accounts</a> </li>
+            <li class="active"> <strong>Edit</strong> </li>
+        </ol>
+    </div>
+    <div class="col-lg-12"> </div>
+</div>
+<div class="wrapper-content ">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="alert alert-danger alert-dismissible" role="alert" v-if="error">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <strong>Error!</strong> <span v-text="error"></span>. Try to reload the page; or <a class="alert-link" href="#">contact support</a> if the problem persists.
+            </div>
+            <div class="alert alert-success alert-dismissable" role="alert" v-if="success">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <strong>Success!</strong> <span v-text="success"></span>.
+            </div>
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Edit account</h5>
+                </div>
+                <div class="widgets-container">
+                    <form class="form-horizontal m-t-xs">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Role</label>
+                            <div class="col-sm-9" style="padding-top: 7px">
+                                <input class="form-control m-t-xxs" v-model="user.AspNetRoles[0].Name" readonly>
+                            </div>
+                        </div>
+                        <hr v-if="user.AspNetRoles[0].Name == 'Station'" />
+                        <div class="form-group" v-if="user.AspNetRoles[0].Name == 'Station'">
+                            <label class="col-sm-3 control-label">Station</label>
+                            <div class="col-sm-9">
+                                <input class="form-control m-t-xxs" v-model="user.Stations[0].Name" readonly>
+                            </div>
+                        </div>
+                        <hr v-if="user.AspNetRoles[0].Name == 'Customer'" />
+                        <div class="form-group" v-if="user.AspNetRoles[0].Name == 'Customer'">
+                            <label class="col-sm-3 control-label">Customer</label>
+                            <div class="col-sm-9">
+                                <input class="form-control m-t-xxs" v-model="user.Customers[0].Name" readonly>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Name</label>
+                            <div class="col-sm-9">
+                                <input class="form-control m-t-xxs" v-model="user.UserName">
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Phone</label>
+                            <div class="col-sm-9">
+                                <input class="form-control m-t-xxs" v-model="user.PhoneNumber">
+                                <p class="help-block" v-if="user.PhoneNumber">
+                                    <span class="text-success" v-if="user.PhoneNumberConfirmed"><i class="fa fa-check"></i> confirmed</span>
+                                    <span class="text-danger" v-if="!user.PhoneNumberConfirmed"><i class="fa fa-times"></i> not confirmed</span>
+                                </p>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Email</label>
+                            <div class="col-sm-9">
+                                <input class="form-control m-t-xxs" v-model="user.Email">
+                                <p class="help-block" v-if="user.Email">
+                                    <span class="text-success" v-if="user.EmailConfirmed"><i class="fa fa-check"></i> confirmed</span>
+                                    <span class="text-danger" v-if="!user.EmailConfirmed"><i class="fa fa-times"></i> not confirmed</span>
+                                </p>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="form-group">
+                            <div class="col-sm-9 col-sm-offset-3">
+                                <button type="button" class="btn red m-t-xs bottom15-xs" data-toggle="modal" data-target=".password">Change password</button>
+                                <button type="submit" class="btn aqua m-t-xs bottom15-xs"    v-on:click.prevent="submit">Confirm</button>
+                                <button type="submit" class="btn default m-t-xs bottom15-xs" v-on:click.prevent="cancel">Cancel</button>
+                            </div>
+                        </div>
+                        <div class="modal fade password" tabindex="-1" role="dialog">
+                            <div class="modal-dialog ">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                        <h4 class="modal-title">Change password</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">New password</label>
+                                            <div class="col-sm-9">
+                                                <input class="form-control" v-model="user.Password" placeholder="Password" type="password">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">Repeat password</label>
+                                            <div class="col-sm-9">
+                                                <input class="form-control" v-model="user.ConfirmPassword" placeholder="Password" type="password">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                        <button type="button" class="btn btn-success" data-dismiss="modal" v-on:click="password">Confirm</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/Scripts/Vendor/icheck.min.js"></script>
+
+    <script>
+        $(function() {
+            $('input.iCheck').iCheck({
+                 checkboxClass: 'icheckbox_square-green',
+                    radioClass: 'iradio_square-green',
+                  increaseArea: '20%'
+            });
+        });
+
+        new Vue({
+            el  : '#app',
+            data: {
+                error  : null,
+                success: null,
+                roles  : null,
+                user   : {
+                    Id             : '',
+                    UserName       : '',
+                    Password       : '',
+                    ConfirmPassword: '',
+                    Stations       : [ { Name: '' } ],
+                    Customers      : [ { Name: '' } ],
+                    AspNetRoles    : [ { Name: '' } ]
+                }
+            },
+            methods: {
+                cancel  : function() { window.location.href = '/accounts'; },
+                password: function() {
+                    var self = this;
+
+                    if (this.user.Password != this.user.ConfirmPassword)
+                    {
+                        this.error = 'Passwords do not match';
+                        return;
+                    }
+
+                    redfox.put('api/passwords/' + this.user.Id, this.user).then(function (response) {
+                        self.user.Password        = '';
+                        self.user.ConfirmPassword = '';
+
+                        self.success = 'Password changed';
+                    }).catch(function (e) {
+                        self.error = e.message;
+                    });
+                },
+                submit: function () {
+
+                }
+            },
+            mounted: function () {
+                var self = this;
+                var pathname = window.location.pathname;
+                var index    = pathname.lastIndexOf('/') + 1;
+                var id       = pathname.substring(index, pathname.length);
+
+                redfox.get('api/accounts/' + id).then(function (response) {
+                    self.user = response.data;
+                }).catch(function (error) {
+                    self.error = error.message;
+                });
+
+                redfox.get('api/accounts')
+            },
+            computed: {
+                match: function() { return this.user.Password == this.user.ConfirmPassword; }
+            }
+        });
+    </script>
+}

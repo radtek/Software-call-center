@@ -1,0 +1,80 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Log in to Red Fox</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="~/Content/Vendor/bootstrap.min.css" rel="stylesheet">
+    <link href="~/Content/Buttons.css" rel="stylesheet">
+    <link href="~/Content/Main.css" rel="stylesheet">
+    <link href="~/Content/Red.css" rel="stylesheet">
+    <!-- media css for responsive  -->
+    <link href="~/Content/Main.media.css" rel="stylesheet">
+    <link href="~/Content/RedFox.css" rel="stylesheet">
+
+    <!--[if lt IE 9]> <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script> <![endif]-->
+    <!--[if lt IE 9]> <script src="dist/html5shiv.js"></script> <![endif]-->
+
+</head>
+<body class="red-bg login">
+    <div id="app" class="middle-box text-center loginscreen ">
+        <div class="widgets-container">
+            <div>
+                <h1 class="logo-name">R-FX</h1>
+            </div>
+            <h3>Thank you</h3>
+            <p>your email address is confirmed. Click @Html.ActionLink("here", "","") to go back to the dashboard</p>
+            <p>
+                <div class="alert alert-danger" role="alert" v-if="error != ''">
+                    <strong>Error!</strong> <span>{{ error }}</span>
+                </div>
+            </p>
+            <p class="top15"> <small>Copyright 2017 &copy; US Captioning Company</small> </p>
+        </div>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.2/axios.min.js"></script>
+    <script src="~/Scripts/global.js"></script>
+
+    <script>
+        function getQueryString(field, url) {
+            var href   = url ? url : window.location.href;
+            var reg    = new RegExp('[?&]' + field + '=([^&#]*)', 'i');
+            var string = reg.exec(href);
+
+            return string ? string[1] : null;
+        };
+
+        new Vue({
+            el: '#app',
+            data: {
+                error: ''
+            },
+            mounted: function () {
+                var self   = this;
+                var userid = getQueryString('UserId');
+                var token  = getQueryString('token');
+
+                auth.get('api/ConfirmEmail?userId=' + userid + "&token=" + token)
+                    .then(function (response) {
+                        self.user = response.data
+                    }).catch(function (error) {
+                        self.error = error.message;
+                        $('.alert-danger').fadeIn();
+                    });
+            }
+        });
+    </script>
+
+</body>
+</html>

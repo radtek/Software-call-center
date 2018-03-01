@@ -1,0 +1,352 @@
+
+@{
+    ViewBag.Title = "Session";
+}
+
+<div class="row wrapper border-bottom page-heading">
+    <div class="col-lg-12">
+        <h2>Session Details </h2>
+        <ol class="breadcrumb">
+            <li> <a href="/">Home</a> </li>
+            <li> <a href="~/sessions">Sessions</a> </li>
+            <li class="active"> <strong>Details</strong> </li>
+        </ol>
+    </div>
+    <div class="col-lg-12"> </div>
+</div>
+<div class="wrapper-content ">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="alert alert-danger alert-dismissible" role="alert" v-if="error != ''">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">x</span></button>
+                <strong>Error!</strong> <span v-text="error"></span>. Try to reload the page; or <a class="alert-link" href="#">contact support</a> if the problem persists.
+            </div>
+            <div class="widgets-container">
+                <h5>Session information</h5>
+                <hr />
+                <form method="get" class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Session ID</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" type="text" readonly v-model="session.Id">
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Station</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" type="text" readonly v-model="session.Station.Name">
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">State</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" type="text" readonly v-model="session.State">
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Recording</label>
+                        <div class="col-sm-4">
+                            <input class="form-control" type="text" readonly v-model="session.Record">
+                        </div>
+                        <div class="col-sm-6">  
+                            <button class="btn btn-danger" v-if="session.State == 'Active'   && !session.Record"     v-on:click.prevent="startRecord"><i class="fa fa-circle"></i>&nbsp; Start recording</button>
+                            <button class="btn btn-danger" v-if="session.State == 'Active'   &&  session.Record"     v-on:click.prevent="stopRecord"><i class="fa fa-stop"></i>&nbsp; Stop recording</button>
+                            <button class="btn btn-info"   v-if="session.State == 'Finished' &&  session.Path != ''" v-on:click.prevent="downloadRecord"><i class="fa fa-download"></i>&nbsp; Download recording</button>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Started</label>
+                        <div class="col-sm-10">
+                            <input v-if="readonlyvalue" class="form-control" type="text" readonly v-model="session.StartTime">
+                            <date-picker v-model="session.StartTime" :config="config" v-if="!readonlyvalue"></date-picker>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">End Time</label>
+                        <div class="col-sm-10">
+                            <input v-if="readonlyvalue" class="form-control" type="text" readonly v-model="session.EndTime">
+                            <date-picker v-model="session.EndTime" :config="config" v-if="!readonlyvalue"></date-picker>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Session time</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" type="text" readonly v-model="session.Elapsed">
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Word count</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" type="text" readonly v-model="session.WordCount">
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="form-group">
+                        <div class="col-sm-10 col-sm-offset-2">
+                            <button class="btn btn-info m-t-xs bottom15-xs" title="Mute" v-on:click.prevent="muteSession" v-if="session.State == 'Active'">
+                                <i v-bind:class="{ 'fa-microphone-slash': !session.Muted, 'fa-microphone': session.Muted }" class="fa"></i>
+                                <span v-if="!session.Muted">&nbsp;Mute</span>
+                                <span v-if=" session.Muted">&nbsp;Unmute</span>
+                            </button>
+                            <button class="btn btn-info m-t-xs bottom15-xs" title="Pause" v-on:click.prevent="pauseSession" v-if="session.State == 'Active'">
+                                <i v-bind:class="{ 'fa-pause': !session.Paused, 'fa-play': session.Paused }" class="fa"></i>
+                                <span v-if="!session.Paused">&nbsp;Pause</span>
+                                <span v-if=" session.Paused">&nbsp;Resume</span>
+                            </button>
+                            <button class="btn btn-danger m-t-xs bottom15-xs" title="Stop" v-on:click.prevent="abandonSession($event)" v-if="session.State == 'Active'">
+                                <span v-html="force"></span>&nbsp;<span>Force stop session</span>
+                            </button>
+                            <button class="btn btn-info m-t-xs bottom15-xs" v-on:click.prevent="getTranscriptText" data-toggle="modal" data-target=".transcript" title="Transcript" v-if="session.State == 'Active' || session.State == 'Finished'">
+                                <i class="fa fa-file-text-o"></i>
+                                <span>&nbsp;Transcript</span>
+                            </button>
+                            <button class="btn btn-info m-t-xs bottom15-xs" v-on:click.prevent="getTranscriptPdf" title="Export as PDF" v-if="session.State == 'Active' || session.State == 'Finished'">
+                                <i class="fa fa-download"></i>
+                                <span>&nbsp;Download</span>
+                            </button>
+                            <button type="submit" class="btn aqua m-t-xs bottom15-xs"    v-on:click.prevent="submitUpdate($event)" v-if="session.State == 'Scheduled'" v-html="save"></button>
+                            <button type="button" class="btn default m-t-xs bottom15-xs" v-on:click.prevent="cancelUpdate">Go Back</button>
+                        </div>
+                    </div>
+                    <div class="modal transcript fade" tabindex="-1" role="dialog">
+                        <div class="modal-dialog ">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                                    <h4 class="modal-title">Session transcript</h4>
+                                </div>
+                                <div style="width: 100%; height: 250px; margin-bottom: 15px; overflow-x: hidden; overflow-y: scroll">
+                                    <div class="modal-body"><code><span v-html="transcript"></span></code></div>
+                                </div>
+                                <div class="modal-footer" style="margin-top: 0">
+                                    <button type="button" class="btn btn-info" v-on:click="getTranscriptText">Refresh</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+    <script src="https://unpkg.com/eonasdan-bootstrap-datetimepicker@4.17.47/build/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="https://unpkg.com/vue-bootstrap-datetimepicker"></script>
+
+    <script>
+        Vue.component('date-picker', VueBootstrapDatetimePicker.default);
+        new Vue({
+            el  : '#app',
+            data: {
+                error     : '',
+                transcript: '',
+                save      : 'Submit',
+                force     : '<i class="fa fa-square"></i>',
+                session   : {
+                    Id         : 0,
+                    State      : '',
+                    StartTime  : '',
+                    EndTime    : '',
+                    WordCount  : 0,
+                    Muted      : true,
+                    Paused     : true,
+                    Path       : '',
+                    Station    : {
+                        Name: ''
+                    }
+                },
+                config: {
+                    format    : 'MM/DD/YYYY h:mm:ss a',
+                    useCurrent: false,
+                },
+                readonlyvalue: true
+            },
+            methods: {
+                cancelUpdate: function () { window.location.href = '/sessions'; },
+                submitUpdate: function (sender) {
+                    var that = this;
+                        that.save = '<img height="16px" src="/Content/Images/loading.gif" />';
+                    
+                    sender.target.disabled = true;
+
+                    redfox.put('api/sessions/' + this.session.Id, this.session).then(function (response) {
+                        that.save = 'Success'
+                        
+                        var returnURL = getQueryString('returnURL');
+
+                        if (!returnURL)
+                             returnURL = '/Sessions';
+
+                        document.location.href = returnURL;
+                    }).catch(function (e) {
+                        sender.target.disabled = false;
+
+                        that.error = e.message;
+                        that.save  = 'Try again';
+                    });
+                },
+                abandonSession: function (sender) {
+                    var that = this;
+                        that.force = '<img height="16px" src="/Content/Images/loading.gif" />';
+                    
+                    sender.target.disabled = true;
+
+                    redfox.delete('api/sessions/' + this.session.Id).then(function (response) {
+                        document.location.reload();
+                    });
+                },
+                getTranscriptPdf: function () {
+                    var self = this;
+
+                    redfox.get('api/archive/' + this.session.Id, {
+                        headers: {
+                            'Accept': 'application/octet-stream'
+                        },
+                        responseType: 'arraybuffer'
+                    }).then(function (response) {
+                        var anchor = document.createElement('a');
+                        var blob   = new Blob([response.data], { type: 'text/plain' });
+                        var url    = window.URL.createObjectURL(blob);
+
+                        document.body.appendChild(anchor);
+
+                        anchor.href     = url;
+                        anchor.download = 'session_' + self.session.Id + '.txt';
+                        anchor.click();
+
+                    }).catch(function (e) {
+                        sender.target.disabled = false;
+
+                        that.error = e.message;
+                        that.force = '<i class="fa fa-square"></i>';
+                    });;
+                },
+                muteSession: function () {
+                    this.session.Muted = !this.session.Muted;
+                    this.updateSession();
+                },
+                pauseSession: function () {
+                    this.session.Paused = !this.session.Paused;
+                    this.updateSession();
+                },
+                startRecord: function () {
+                    this.session.Record = true;
+                    this.update();
+                },
+                stopRecord: function () {
+                    this.session.Record = false;
+                    this.updateSessionupdateSession();
+                },
+                updateSession: function () {
+                    var that = this;
+
+                    redfox.put('api/sessions/' + this.session.Id, this.session).then(function (response) {
+                        // TODO POLL for update?
+                    }).catch(function (e) { that.error = e.message; });
+                },
+                downloadRecord: function () {
+                    var that = this; 
+
+                    redfox.get('api/recordings/' + this.session.Id).then(function (response) {
+                        axios.get(response.data, { responseType:"blob" }).then(
+                            function (file) {
+                                var anchor = document.createElement('a');
+                                var blob   = new Blob([file.data], { type: 'audio/wav' });
+                                var url    = window.URL.createObjectURL(blob);
+
+                                document.body.appendChild(anchor);
+
+                                anchor.href     = url;
+                                anchor.download = that.session.Id + '.wav';
+                                anchor.click();
+    
+                                window.URL.revokeObjectURL(url);
+    
+                                document.body.removeChild(anchor);
+                            }
+                        ).catch(function (e) {
+                            console.log(e);
+                            that.error = e.message;
+                        });
+                    }).catch (function (e) {
+                        that.error = e.message
+                    });
+                },
+                getTranscriptText: function () {
+                    var self = this;
+
+                    redfox.get('api/archive/' + this.session.Id).then(function (response) {
+                        self.transcript = response.data;
+                    }).catch(function (e) {
+                        self.error = e.message;
+                    });
+                },
+                getTranscriptPdf: function () {
+                    var self = this;
+
+                    redfox.get('api/archive/' + this.session.Id, {
+                        headers: {
+                            'Accept': 'application/octet-stream'
+                        },
+                        responseType: 'arraybuffer'
+                    }).then(function (response) {
+                        var anchor = document.createElement('a');
+                        var blob   = new Blob([response.data], { type: 'application/pdf' });
+                        var url    = window.URL.createObjectURL(blob);
+
+                        document.body.appendChild(anchor);
+
+                        anchor.href     = url;
+                        anchor.download = 'session_' + self.session.Id + '.pdf';
+                        anchor.click();
+
+                        window.URL.revokeObjectURL(url);
+
+                        document.body.removeChild(anchor);
+                    })
+                        .catch(function (e) {
+                            self.error = e.message;
+                        });
+                },
+            },
+            mounted: function () {
+                var self     = this;
+                var pathname = window.location.pathname;
+                var index    = pathname.lastIndexOf('/') + 1;
+                var id       = pathname.substring(index, pathname.length);
+
+                redfox.get('api/sessions/' + id).then(function (response) {
+                    if (response.data == null) {
+                        self.error = 'Session not found';
+                    }
+
+                    else {
+                        self.session = response.data;
+                        self.session.Transcript = '';
+
+                        if (self.session.StartTime != null)
+                            self.session.StartTime = moment(String(self.session.StartTime)).format('MM/DD/YYYY h:mm:ss a'); //MMMM Do YYYY, h:mm: ss a
+                        
+                        if (self.session.EndTime != null)
+                            self.session.EndTime = moment(String(self.session.EndTime)).format('MM/DD/YYYY h:mm:ss a');
+                        
+                        if (self.session.State == "Scheduled") {
+                            self.readonlyvalue = false;
+                        }
+                    }
+                }).catch(function (e) {
+                    self.error = e.message;
+                });
+            }
+        });
+    </script>
+}

@@ -1,0 +1,149 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Log in to Red Fox</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="~/Content/Vendor/bootstrap.min.css" rel="stylesheet">
+    <link href="~/Content/Buttons.css" rel="stylesheet">
+    <link href="~/Content/Main.css" rel="stylesheet">
+    <link href="~/Content/Red.css" rel="stylesheet">
+    <!-- media css for responsive  -->
+    <link href="~/Content/Main.media.css" rel="stylesheet">
+    <link href="~/Content/RedFox.css" rel="stylesheet">
+
+    <!--[if lt IE 9]> <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script> <![endif]-->
+    <!--[if lt IE 9]> <script src="dist/html5shiv.js"></script> <![endif]-->
+
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+</head>
+<body class="red-bg login">
+    <div id="app" class="middle-box text-center loginscreen ">
+        <div class="widgets-container">
+            <div>
+                <h1 class="logo-name">R-FX</h1>
+            </div>
+            <h3>Welcome to Red Fox</h3>
+            <p>admin dashboard for management of your live transcriptions and account</p>
+            <p>
+                Log in or Sign up
+                <div class="alert alert-danger" role="alert" v-if="error">
+                    <strong>Error!</strong> <span>{{ error }}</span>
+                </div>
+            </p>
+            <form class="top15" role="form" id="form">
+                <div class="form-group">
+                    <input v-model="username" placeholder="Username" class="form-control" required="" />
+                    <span v-if="!username" class="left invalid-feedback bottom10"><small>Please provide a valid username</small></span>
+                </div>
+                <div class="form-group">
+                    <input v-model="password" placeholder="Password" class="form-control" type="password" required="" />
+                    <span v-if="!password" class="left invalid-feedback bottom10"><small>Password is required</small></span>
+                </div>
+                <div class="form-group g-recaptcha" data-sitekey="6Ldr10EUAAAAAKcSQtSWiG4KtXt63u5Fd3rC5u-2"></div>
+                <button class="btn green block full-width bottom15" type="submit" v-on:click.prevent="submit($event)" v-html="login"></button>
+                <small>@Html.ActionLink("Forgot password?", "ForgotPassword")</small>
+                @*<p class="text-muted text-center"><small>No account yet?</small></p>
+                    @Html.ActionLink("Create an account", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink", @class = "btn btn-sm btn-white btn-block" })*@
+            </form>
+            <p class="top15"> <small>Copyright 2017 &copy; US Captioning Company</small> </p>
+        </div>
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.2/axios.min.js"></script>
+    
+    <script>
+        if (typeof (Storage) === undefined) {
+            alert('No session storage available');
+        }
+
+        function getQueryString(field, url) {
+            var href   = url ? url : window.location.href;
+            var reg    = new RegExp('[?&]' + field + '=([^&#]*)', 'i');
+            var string = reg.exec(href);
+
+            return string ? string[1] : null;
+        };
+
+        new Vue({
+            el: '#app',
+            data: {
+                username: null,
+                password: null,
+                error   : null,
+                login   : 'Login'
+            },
+            methods: {
+                submit: function (sender) {
+                    this.login = '<img height="16px" src="/Content/Images/loading.gif" />';
+
+                    sender.target.disabled = true;
+
+                    if (document.getElementById('form').checkValidity() == false) {
+                        form.classList.add("was-validated");
+
+                        sender.target.disabled = false;
+                        this.login = 'Try again';
+                        return;
+                    }
+                    
+                    var response   = grecaptcha.getResponse();
+                    var self       = this;
+                        self.error = null;
+
+                    if (response == '') {
+                        sender.target.disabled = false;
+                        
+                        self.error = 'Are you a robot?';
+                        self.login = 'Try again';
+
+                        return;
+                    }
+
+                    axios.post('https://redfox.cloud/oauth/token', 'grant_type=password&username=' + this.username + '&password=' + this.password)
+                    //axios.post('http://localhost/oauth/token', 'grant_type=password&username=' + this.username + '&password=' + this.password)
+                        .then(function (response) {
+                            var now        = new Date().getTime();
+                            var expires_in = response.data.expires_in * 1000;
+                            var expires    = now + expires_in;
+                            var returnURL  = getQueryString('returnURL');
+
+                            if (!returnURL)
+                                returnURL = '/';
+
+                            sessionStorage.setItem(      'user_id', response.data.id);
+                            sessionStorage.setItem(    'user_name', response.data.username);
+                            sessionStorage.setItem( 'organization', response.data.organization);
+                            sessionStorage.setItem(   'user_roles', response.data.roles);
+                            sessionStorage.setItem(   'token_type', response.data.token_type);
+                            sessionStorage.setItem( 'access_token', response.data.access_token);
+                            sessionStorage.setItem('refresh_token', response.data.refresh_token);
+                            sessionStorage.setItem(      'expires', expires);
+                            
+                            document.location.href = returnURL;
+                        })
+                        .catch(function (e) {
+                            sender.target.disabled = false;
+                            self.error = e.message;
+                            self.login = 'Try again';
+
+                            if (e.response.status == 400) {
+                                self.error = 'Invalid user name or password';
+                            }
+                        });
+                }
+            }
+        });
+    </script>
+</body>
+</html>
